@@ -1,5 +1,5 @@
 {
-    "name": "anax/comment",
+    "name": "radchasay/comment",
     "type": "library",
     "description": "Anax comment module.",
     "keywords": ["boilerplate", "framework", "mvc", "micro", "education"],
@@ -17,8 +17,9 @@
         "issues": "https://github.com/canax/comment/issues"
     },
     "autoload": {
-        "psr-4": { 
-            "Anax\\": "src/"
+        "psr-4": {
+            "Anax\\": "src/",
+            "Radchasay\\": "src/"
         }
     },
     "require": {
