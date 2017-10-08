@@ -8,7 +8,17 @@ return [
     "routeFiles" => [
         [
             "mount" => "comment",
-            "file" => __DIR__ . "/route2/comment.php"
-        ]
+            "file" => __DIR__ . "/route/comment.php"
+        ],
+        [
+            // For creating users....
+            "mount" => null,
+            "file" => __DIR__ . "/route/userController.php",
+        ],
+        [
+            // For creating users....
+            "mount" => null,
+            "file" => __DIR__ . "/route/admin.php",
+        ],
     ],
 ];

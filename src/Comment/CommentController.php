@@ -9,54 +9,19 @@ use \Anax\DI\InjectionAwareTrait;
  * A controller for commentsystem
  *
  * @SuppressWarnings(PHPMD.ExitExpression)
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class CommentController implements InjectionAwareInterface
 {
-    
+
     use InjectionAwareTrait;
-    
-    public function commentConnect()
+
+    public function checkLogin($modelName, $id = null)
     {
-        $this->di->get("database")->connect();
-    }
-    
-    public function postRetrieve()
-    {
-        $this->di->get("commentModel")->getPosts();
-    }
-    
-    public function postRetrieveOneAndComments($postId)
-    {
-        $this->di->get("commentModel")->getOnePostAndComments($postId);
-    }
-    
-    public function postCreate()
-    {
-        $data = $this->di->get("request")->getPost();
-        $this->di->get("commentModel")->postCreate($data);
-    }
-    
-    public function commentCreate()
-    {
-        $data = $this->di->get("request")->getPost();
-        
-        $this->di->get("commentModel")->commentCreate($data);
-    }
-    
-    public function newPost()
-    {
-        $this->di->get("commentModel")->newPost();
-    }
-    
-    public function newComment()
-    {
-        $this->checkLogin("newComment");
-    }
-    
-    
-    public function checkLogin($modelName)
-    {
-        if ($this->di->get("session")->has("name")) {
+        if ($this->di->get("session")->has("email")) {
+            if ($id !== null) {
+                $this->di->get("commentModel")->$modelName($id);
+            }
             $this->di->get("commentModel")->$modelName();
         } else {
             $login = $this->di->get("url")->create("user/login");
@@ -64,20 +29,47 @@ class CommentController implements InjectionAwareInterface
             exit;
         }
     }
-    
+
+    public function commentConnect()
+    {
+        $this->di->get("database")->connect();
+    }
+
     public function deleteComment($commentId)
     {
         $this->di->get("commentModel")->deleteComment($commentId);
     }
-    
+
     public function editComment($commentId)
     {
         $this->di->get("commentModel")->editComment($commentId);
     }
-    
-    public function editCommentSubmit()
+    // public function editCommentSubmit()
+    // {
+    //     $data = $this->di->get("request")->getPost();
+    //     $this->di->get("commentModel")->editCommentSubmit($data);
+    // }
+
+
+
+    public function newPost()
     {
-        $data = $this->di->get("request")->getPost();
-        $this->di->get("commentModel")->editCommentSubmit($data);
+        $this->di->get("commentModel")->newPost();
+    }
+
+
+    public function viewAllPosts() {
+        $this->di->get("commentModel")->viewAllPosts();
+    }
+
+
+    public function newComment($id)
+    {
+        $this->checkLogin("newComment", $id);
+    }
+
+    public function postAndComments($id)
+    {
+        $this->di->get("commentModel")->postAndComments($id);
     }
 }
