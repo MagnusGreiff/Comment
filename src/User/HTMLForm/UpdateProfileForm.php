@@ -69,7 +69,7 @@ class UpdateProfileForm extends FormModel
      *
      * @param integer $id get details on item with id.
      *
-     * @return boolean true if okey, false if something went wrong.
+     * @return $user
      */
     public function getItemDetails($id)
     {

@@ -21,11 +21,11 @@ class CreateCommentForm extends FormModel
         parent::__construct($di);
 
         $this->form->create(
-        [
-            "id"     => __CLASS__,
-            "legend" => "Create new comment",
-        ],
-        [
+            [
+                "id"     => __CLASS__,
+                "legend" => "Create new comment",
+            ],
+            [
                 "text"    => [
                     "type"     => "text"
                 ],

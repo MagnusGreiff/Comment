@@ -1,0 +1,79 @@
+<?php
+
+namespace Radchasay\Comment\HTMLForm;
+
+use \Anax\HTMLForm\FormModel;
+use \Anax\DI\DIInterface;
+use \Radchasay\Comment\Post;
+
+/**
+ * Example of FormModel implementation.
+ */
+class CreatePostForm extends FormModel
+{
+    /**
+     * Constructor injects with DI container.
+     *
+     * @param Anax\DI\DIInterface $di a service container
+     */
+    public function __construct(DIInterface $di)
+    {
+        parent::__construct($di);
+
+        $this->form->create(
+            [
+                "id"     => __CLASS__,
+                "legend" => "Create Post",
+            ],
+            [
+                "title" => [
+                    "type" => "text",
+                    //"description" => "Here you can place a description.",
+                    //"placeholder" => "Here is a placeholder",
+                ],
+
+                "text" => [
+                    "type" => "text",
+                    //"description" => "Here you can place a description.",
+                    //"placeholder" => "Here is a placeholder",
+                ],
+
+                "name" => [
+                    "type" => "text",
+                ],
+
+                "submit" => [
+                    "type"     => "submit",
+                    "value"    => "Create Post",
+                    "callback" => [$this, "callbackSubmit"],
+                ],
+            ]
+        );
+    }
+
+
+    /**
+     * Callback for submit-button which should return true if it could
+     * carry out its work and false if something failed.
+     *
+     * @return boolean true if okey, false if something went wrong.
+     */
+    public function callbackSubmit()
+    {
+        // Get values from the submitted form
+        //
+        $post = new Post();
+        $post->setDB($this->di->get("db"));
+        $post->posttitle = $this->form->value("title");
+        $post->posttext = $this->form->value("text");
+        $post->postname = $this->form->value("name");
+
+
+        $post->save();
+
+        $url = $this->di->get("url")->create("comment/viewAllPosts");
+        $this->di->get("response")->redirect($url);
+        return true;
+    }
+}
+

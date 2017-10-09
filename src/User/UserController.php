@@ -180,7 +180,6 @@ class UserController implements
 
             $pageRender->renderPage(["title" => $title]);
         }
-
     }
 
 
@@ -265,20 +264,8 @@ class UserController implements
         }
     }
 
-
-    // public function checkUserId() {
-    //     if ($this->di->get("session")->has("email")) {
-    //         $email = $this->di->get("session")->get("email");
-    //         $user = new User();
-    //         $user->setDb($this->di->get("db"));
-    //         $res = $user->find("email", $email);
-    //
-    //         if ()
-    //     }
-    // }
-    //
-
-    public function checkUserIdMatch($id) {
+    public function checkUserIdMatch($id)
+    {
         if ($this->di->get("session")->has("email")) {
             $email = $this->di->get("session")->get("email");
             $user = new User();
@@ -294,11 +281,10 @@ class UserController implements
             $url = $this->di->get("url")->create("user/profile");
             $this->di->get("response")->redirect($url);
         }
-
-
     }
 
-    public function checkAdminLoggedIn() {
+    public function checkAdminLoggedIn()
+    {
         if ($this->di->get("session")->has("email")) {
             $email = $this->di->get("session")->get("email");
             $user = new User();
@@ -314,6 +300,5 @@ class UserController implements
             $url = $this->di->get("url")->create("user/login");
             $this->di->get("response")->redirect($url);
         }
-
     }
 }

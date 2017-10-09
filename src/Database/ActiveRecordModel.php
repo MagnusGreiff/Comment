@@ -155,8 +155,8 @@ class ActiveRecordModel
      *
      * @return void
      */
-     protected function update($idName = null, $id = null)
-     {
+    protected function update($idName = null, $id = null)
+    {
          $this->checkDb();
          $properties = $this->getProperties();
          unset($properties['id']);
@@ -169,7 +169,7 @@ class ActiveRecordModel
                   ->update($this->tableName, $columns)
                   ->where("$setId = ?")
                   ->execute($values);
-     }
+    }
 
 
 

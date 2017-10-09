@@ -33,45 +33,45 @@ class AdminUpdateUser extends FormModel
                     "readonly"   => true,
                     "value"      => $user->id,
                 ],
-                
+
                 "name" => [
                     "type"       => "text",
                     "validation" => ["not_empty"],
                     "value"      => $user->name,
                 ],
-                
+
                 "email" => [
                     "type"       => "text",
                     "validation" => ["not_empty"],
                     "value"      => $user->email,
                 ],
-                
+
                 "age" => [
                     "type"       => "number",
                     "validation" => ["not_empty"],
                     "value"      => $user->age,
                 ],
-                
+
                 "submit" => [
                     "type"     => "submit",
                     "value"    => "Save",
                     "callback" => [$this, "callbackSubmit"],
                 ],
-                
+
                 "reset" => [
                     "type" => "reset",
                 ],
             ]
         );
     }
-    
-    
+
+
     /**
      * Get details on item to load form with.
      *
      * @param integer $id get details on item with id.
      *
-     * @return boolean true if okey, false if something went wrong.
+     * @return $user
      */
     public function getItemDetails($id)
     {
@@ -80,8 +80,8 @@ class AdminUpdateUser extends FormModel
         $user->find("id", $id);
         return $user;
     }
-    
-    
+
+
     /**
      * Callback for submit-button which should return true if it could
      * carry out its work and false if something failed.

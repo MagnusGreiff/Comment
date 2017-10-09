@@ -58,7 +58,8 @@ class CommentController implements InjectionAwareInterface
     }
 
 
-    public function viewAllPosts() {
+    public function viewAllPosts()
+    {
         $this->di->get("commentModel")->viewAllPosts();
     }
 

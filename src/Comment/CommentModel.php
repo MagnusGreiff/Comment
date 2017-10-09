@@ -11,7 +11,6 @@ use \Radchasay\Comment\HTMLForm\CreatePostForm;
 use \Radchasay\Comment\HTMLForm\CreateCommentForm;
 use \Radchasay\Comment\HTMLForm\UpdateCommentForm;
 
-
 /**
  * CommentModel
  */
@@ -127,5 +126,4 @@ class CommentModel implements InjectionAwareInterface
 
         $pageRender->renderPage(["title" => $title]);
     }
-
 }
