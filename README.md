@@ -1,16 +1,7 @@
-Anax comment
+Radchasay comment
 ==================================
 
-[![Latest Stable Version](https://poser.pugx.org/anax/comment/v/stable)](https://packagist.org/packages/anax/comment)
-[![Join the chat at https://gitter.im/mosbth/anax](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/canax?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/canax/comment.svg?branch=master)](https://travis-ci.org/canax/comment)
-[![CircleCI](https://circleci.com/gh/canax/comment.svg?style=svg)](https://circleci.com/gh/canax/comment)
-[![Build Status](https://scrutinizer-ci.com/g/canax/comment/badges/build.png?b=master)](https://scrutinizer-ci.com/g/canax/comment/build-status/master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/canax/comment/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/canax/comment/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/canax/comment/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/canax/comment/?branch=master)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/d831fd4c-b7c6-4ff0-9a83-102440af8929/mini.png)](https://insight.sensiolabs.com/projects/d831fd4c-b7c6-4ff0-9a83-102440af8929)
-
-Anax comment module.
+Radchasay comment module.
 
 
 
@@ -18,6 +9,30 @@ Usage
 ------------------
 
 Short examples on how to use the module comment.
+
+##### Config
+
+Copy everything from config/route to your own route folder.
+Copy database.php from config/ if you don't have one.
+Copy everything from di.php and put in your own di.php.
+Copy everything from route2.php and put in your own route file.
+
+
+##### Sql
+
+Copy the sql file database.sql to your own sql folder and run the sql code.
+
+##### Src
+
+Copy the source for Database and put in src/Database. This is very important because i have modified the database source code.
+
+##### View
+
+Copy everthing from the view folder and put in your own view folder.
+
+##### composer.json
+
+In your composer.json autoload add the following: "Radchasay\\": "src/".
 
 
 
