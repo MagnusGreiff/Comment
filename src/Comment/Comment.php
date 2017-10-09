@@ -30,7 +30,7 @@ class Comment extends ActiveRecordModel
 
     public function getInformation($email)
     {
-        $res = $this->find("email", $email);
+        $res = $this->find("postuser", $email);
         return $res;
     }
 }
