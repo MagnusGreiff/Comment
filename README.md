@@ -10,29 +10,29 @@ Usage
 
 Short examples on how to use the module comment.
 
-##### Config
+## Config
 
-Copy everything from config/route to your own route folder.
-Copy database.php from config/ if you don't have one.
-Copy everything from di.php and put in your own di.php.
-Copy everything from route2.php and put in your own route file.
+###### Copy everything from config/route to your own route folder.
+###### Copy database.php from config/ if you don't have one.
+###### Copy everything from di.php and put in your own di.php.
+###### Copy everything from route2.php and put in your own route file.
 
 
-##### Sql
+## Sql
 
-Copy the sql file database.sql to your own sql folder and run the sql code.
+###### Copy the sql file database.sql to your own sql folder and run the sql code.
 
-##### Src
+## Src
 
-Copy the source for Database and put in src/Database. This is very important because i have modified the database source code.
+###### Copy the source for Database and put in src/Database. This is very important because i have modified the database source code.
 
-##### View
+## View
 
-Copy everthing from the view folder and put in your own view folder.
+###### Copy everthing from the view folder and put in your own view folder.
 
-##### composer.json
+## composer.json
 
-In your composer.json autoload add the following: "Radchasay\\": "src/".
+###### In your composer.json autoload add the following: "Radchasay\\": "src/".
 
 
 
