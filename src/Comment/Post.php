@@ -58,7 +58,7 @@ class Post extends ActiveRecordModel
 
     public function getInformation($email)
     {
-        $res = $this->find("email", $email);
+        $res = $this->find("postname", $email);
         return $res;
     }
 }
