@@ -102,7 +102,6 @@ class CommentController implements InjectionAwareInterface
             $this->di->get("response")->redirect($login);
             exit;
         }
-
     }
 
     public function postAndComments($id)
