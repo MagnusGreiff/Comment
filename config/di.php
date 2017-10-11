@@ -12,14 +12,6 @@ return [
               return $commentController;
           }
       ],
-      "commentModel" => [
-          "shared" => true,
-          "callback" => function () {
-              $commentModel = new \Radchasay\Comment\CommentModel();
-              $commentModel->setDI($this);
-              return $commentModel;
-          }
-      ],
       "userController" => [
             "shared" => true,
             "callback" => function () {
