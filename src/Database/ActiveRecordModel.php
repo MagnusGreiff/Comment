@@ -133,6 +133,8 @@ class ActiveRecordModel
 
     /**
      * Execute rawsql
+     * @param string $sql rawsql
+     * @param array $params params
      *
      * @return array
      */
@@ -141,7 +143,7 @@ class ActiveRecordModel
         $this->checkDb();
         return $this->db->connect()
                         ->execute($sql, $params)
-                        ->fetchAllClass(get_class($this))
+                        ->fetchAllClass(get_class($this));
     }
 
 
@@ -207,6 +209,9 @@ class ActiveRecordModel
                   ->where("$setId = ?")
                   ->execute($values);
     }
+
+
+    
 
 
 
