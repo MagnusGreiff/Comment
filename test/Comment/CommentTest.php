@@ -13,7 +13,7 @@ class CommentTest extends \PHPUnit\Framework\TestCase
     public $createcommentform;
     public function setUp()
     {
-        $this->di = new \Anax\DI\DIFactoryConfig("di.php");
+        $this->di = new \Anax\DI\DIFactoryConfig(__DIR__ . "/../dummy_di.php");
         $this->commentController = new \Radchasay\Comment\CommentController();
         $this->post = new \Radchasay\Comment\Post();
         $this->comment = new \Radchasay\Comment\Comment();
@@ -37,38 +37,40 @@ class CommentTest extends \PHPUnit\Framework\TestCase
     public function testCommentGetInformation()
     {
         $this->comment->setDb($this->di->get("db"));
-        $res = $this->comment->getInformation("hej@d.com");
-        $this->assertEquals($res->postuser, "hej@d.com");
-        $this->assertEquals($res->idpost, "1");
-        $this->assertEquals($res->commenttext, "jfkldsjflksdjklfsqq");
-        $this->assertEquals($res->idcomment, "2");
-    }
-
-    // public function testUpdateCommentForm()
-    // {
-    //     $this->updatecommentform = new \Radchasay\Comment\HTMLForm\UpdateCommentForm($this->di, 1);
-    //     $res = $this->updatecommentform->getitemDetails(1);
-    //     $this->assertEquals($res->postuser, "some@f.com");
-    //     $this->assertEquals($res->idpost, "1");
-    //     $this->assertEquals($res->commenttext, "jfsdsjifdsjifdsjifdjifdsio");
-    //     $this->assertEquals($res->idcomment, "1");
-    // }
-
-    public function testCreateCommentForm()
-    {
-        $this->createcommentform = new \Radchasay\Comment\HTMLForm\CreateCommentForm($this->di, 1);
-        $test = $this->createcommentform->callbackSubmit();
-        $this->assertEquals($test, false);
-    }
-
-
-    public function testCreatePostForm()
-    {
-        $this->createpostform = new \Radchasay\Comment\HTMLForm\CreatePostForm($this->di);
+        $res = $this->comment->getInformation("l@lc.com");
+        $this->assertEquals($res->postuser, "l@lc.com");
+        $this->assertEquals($res->idpost, "2");
+        $this->assertEquals($res->commenttext, "fsdfsdf");
+        $this->assertEquals($res->idcomment, "3");
     }
 
     public function testUpdateCommentForm()
     {
         $this->updatecommentform = new \Radchasay\Comment\HTMLForm\UpdateCommentForm($this->di, 1);
+        $res = $this->updatecommentform->getitemDetails(3);
+        $this->assertEquals($res->postuser, "l@lc.com");
+        $this->assertEquals($res->idpost, "2");
+        $this->assertEquals($res->commenttext, "fsdfsdf");
+        $this->assertEquals($res->idcomment, "3");
+
+        $this->updatecommentform->callbackSubmit();
     }
+
+    // public function testCreateCommentForm()
+    // {
+    //     $this->createcommentform = new \Radchasay\Comment\HTMLForm\CreateCommentForm($this->di, 1);
+    //     //$test = $this->createcommentform->callbackSubmit();
+    // //    $this->assertEquals($test, false);
+    // }
+    //
+    //
+    // public function testCreatePostForm()
+    // {
+    //     $this->createpostform = new \Radchasay\Comment\HTMLForm\CreatePostForm($this->di);
+    // }
+    //
+    // public function testUpdateCommentForm()
+    // {
+    //     $this->updatecommentform = new \Radchasay\Comment\HTMLForm\UpdateCommentForm($this->di, 1);
+    // }
 }
