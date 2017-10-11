@@ -17,7 +17,7 @@ class Comment extends ActiveRecordModel
      * @var string $tableName name of the database table.
      */
     protected $tableName = "Comments";
-    protected $idField = 'idcomment';
+    //protected $idField = 'idcomment';
 
     /**
      * Columns in the table.
