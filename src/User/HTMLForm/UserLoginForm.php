@@ -93,6 +93,7 @@ class UserLoginForm extends FormModel
 
 
         $this->di->get("session")->set("email", $user->email);
+        var_dump($_SESSION);
         $url = $this->di->get("url")->create("user/profile");
         $this->di->get("response")->redirect($url);
         $this->form->addOutput("User " . $user->email . " logged in.");
