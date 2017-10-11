@@ -34,6 +34,17 @@ class CommentTest extends \PHPUnit\Framework\TestCase
     }
 
 
+    public function testCommentGetSpecificCommentsFromPost()
+    {
+        $this->comment->setDb($this->di->get("db"));
+        $res = $this->comment->getAllCommentsFromSpecificPost("Call CheckComment(?)", [2]);
+        $this->assertEquals($res[0]->idcomment, 3);
+        $this->assertEquals($res[0]->commenttext, "fsdfsdf");
+        $this->assertEquals($res[0]->idpost, 2);
+        $this->assertEquals($res[1]->Text, "some post about something random");
+    }
+
+
     public function testCommentGetInformation()
     {
         $this->comment->setDb($this->di->get("db"));
@@ -52,25 +63,40 @@ class CommentTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($res->idpost, "2");
         $this->assertEquals($res->commenttext, "fsdfsdf");
         $this->assertEquals($res->idcomment, "3");
-
-        $this->updatecommentform->callbackSubmit();
     }
 
-    // public function testCreateCommentForm()
-    // {
-    //     $this->createcommentform = new \Radchasay\Comment\HTMLForm\CreateCommentForm($this->di, 1);
-    //     //$test = $this->createcommentform->callbackSubmit();
-    // //    $this->assertEquals($test, false);
-    // }
+    public function testCreateCommentForm()
+    {
+        $this->createcommentform = new \Radchasay\Comment\HTMLForm\CreateCommentForm($this->di, 1);
+    }
     //
     //
-    // public function testCreatePostForm()
+    public function testCreatePostForm()
+    {
+        $this->createpostform = new \Radchasay\Comment\HTMLForm\CreatePostForm($this->di);
+    }
+
+
+    // public function testCreateCommentAndDelete()
     // {
-    //     $this->createpostform = new \Radchasay\Comment\HTMLForm\CreatePostForm($this->di);
-    // }
+    //     $this->comment->setDb($this->di->get("db"));
+    //     $this->comment->commenttext = "halloj";
+    //     $this->comment->idpost = 2;
+    //     $this->comment->postuser = "comment@comment.com";
     //
-    // public function testUpdateCommentForm()
-    // {
-    //     $this->updatecommentform = new \Radchasay\Comment\HTMLForm\UpdateCommentForm($this->di, 1);
+    //     $this->comment->save();
+    //
+    //     $res = $this->comment->getInformation("comment@comment.com");
+    //
+    //     $this->assertEquals($res->postuser, "comment@comment.com");
+    //
+    //     var_dump($res->idcomment);
+    //
+    //     // var_dump($res->idcomment);
+    //     $this->commentController->deleteComment($res->idcomment);
+    //     // $res = $this->comment->getInformation("comment@comment.com");
+    //     // $this->assertEquals($res->postuser, false);
+    //
+    //
     // }
 }
