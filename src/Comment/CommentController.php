@@ -121,10 +121,14 @@ class CommentController implements InjectionAwareInterface
             $permissions = "user";
         }
 
+        $comment = new Comment();
+        $comment->setDb($this->di->get("db"));
+        $sql = "Call CheckComment(?)";
+
 
         $data = [
             "post" => $post->find("id", $id),
-            "comments" => $this->di->get("db")->executeFetchAll("Call CheckComment($id)"),
+            "comments" => $comment->getAllCommentsFromSpecificPost($sql, [$id]),
             "permissions" => $permissions
         ];
 

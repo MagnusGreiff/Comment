@@ -57,11 +57,18 @@ class CommentTest extends \PHPUnit\Framework\TestCase
     public function testCreateCommentForm()
     {
         $this->createcommentform = new \Radchasay\Comment\HTMLForm\CreateCommentForm($this->di, 1);
+        $test = $this->createcommentform->callbackSubmit();
+        $this->assertEquals($test, false);
     }
 
 
     public function testCreatePostForm()
     {
         $this->createpostform = new \Radchasay\Comment\HTMLForm\CreatePostForm($this->di);
+    }
+
+    public function testUpdateCommentForm()
+    {
+        $this->updatecommentform = new \Radchasay\Comment\HTMLForm\UpdateCommentForm($this->di, 1);
     }
 }

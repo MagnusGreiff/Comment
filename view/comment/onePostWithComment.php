@@ -5,6 +5,8 @@ $currentUser = $di->get("session")->has("email") ? $di->get("session")->get("ema
 $deleteComment = $di->url->create("comment/deleteComment");
 $editComment = $di->url->create("comment/editComment");
 
+
+var_dump($comment);
 ?>
 
 <main class="postsAndComments">
