@@ -4,7 +4,6 @@ namespace Radchasay\Comment;
 
 class CommentTest extends \PHPUnit\Framework\TestCase
 {
-    public $di;
     public $commentController;
     public $post;
     public $comment;
@@ -12,12 +11,13 @@ class CommentTest extends \PHPUnit\Framework\TestCase
     public $createpostform;
     public $createcommentform;
     public static $db;
+    public static $di;
 
     public function setUp()
     {
         global $di;
-        $this->di = new \Anax\DI\DIFactoryConfig(__DIR__ . "/../dummy_di.php");
-        $di = $this->di;
+        // self::$di = new \Anax\DI\DIFactoryConfig(__DIR__ . "/../dummy_di.php");
+        $di = self::$di;
         //$this->commentController = new \Radchasay\Comment\CommentController();
     }
 
@@ -26,11 +26,16 @@ class CommentTest extends \PHPUnit\Framework\TestCase
      */
     public static function setUpBeforeClass()
     {
-        self::$db = new \Anax\Database\DatabaseQueryBuilder([
-            "dsn" => "sqlite::memory:",
-            "table_prefix" => "radchasay_",
-            "debug_connect" => true,
-        ]);
+        //global $di;
+        self::$di = new \Anax\DI\DIFactoryConfig(__DIR__ . "/../dummy_di.php");
+    //    $di = self::$di;
+
+        self::$db = self::$di->get("db");
+        // self::$db = new \Anax\Database\DatabaseQueryBuilder([
+        //     "dsn" => "sqlite::memory:",
+        //     "table_prefix" => "radchasay_",
+        //     "debug_connect" => true,
+        // ]);
         self::$db->connect();
         self::$db->createTable(
             "Posts",
@@ -70,32 +75,36 @@ class CommentTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($comment->idcomment, $res->idcomment);
     }
 
-    // public function testDeleteComment()
-    // {
-    //     $comment = new Comment();
-    //     $comment->setDb(self::$db);
-    //     $comment->idcomment = 2;
-    //     $comment->commenttext = "Halloj";
-    //     $comment->idpost = 1;
-    //     $comment->postuser = "comment@comment.com";
-    //     $comment->save();
-    //
-    //     $controller = new CommentController();
-    //     $controller->setDI($this->di);
-    //     $controller->deleteComment($comment->idcomment);
-    // }
+    public function testViewAllPosts()
+    {
+        $post = new Post();
+        $post->setDb(self::$db);
+        $post->postname = "Magnus Greiff";
+        $post->posttitle = "Who is Munge?";
+        $post->posttext = "Who is Munge?";
+        $post->save();
 
-    // public function testViewAllPosts()
+        $controller = new CommentController();
+        $controller->setDI(self::$di);
+        list($body, $data, $status) = $controller->viewAllPosts();
+        $doc = new \DOMDocument();
+        $doc->loadHTML($body);
+        $res = $doc->getElementsByTagName('p');
+        $this->assertEquals($res[0]->textContent, "Create  new post: Click here.");
+        $this->assertEquals($res[1]->textContent, "Text: Who is Munge?");
+        $this->assertEquals($res[2]->textContent, "Author: Magnus Greiff");
+        $this->assertEquals($data["title"], "Retrieve all posts");
+        $this->assertEquals($data["stylesheets"][0], "css/style.css");
+        $this->assertEquals($status, 200);
+    }
+
+    // public function testNewComment()
     // {
-    //     ob_start();
+    //     self::$di->get("session")->set("email", "mangegreiff@gmail.com");
     //     $controller = new CommentController();
-    //     $controller->setDI($this->di);
-    //     $controller->viewAllPosts();
-    //     $length = ob_get_length();
-    //     ob_end_clean();
-    //
-    //     echo $length;
-    //     echo "meh";
+    //     $controller->setDI(self::$di);
+    //     list($body, $data, $status) = $controller->newComment(1);
+    //     var_dump($status);
     // }
 
     public function testObject()
@@ -122,12 +131,12 @@ class CommentTest extends \PHPUnit\Framework\TestCase
 
     public function testCreateCommentForm()
     {
-        $this->createcommentform = new \Radchasay\Comment\HTMLForm\CreateCommentForm($this->di, 1);
+        $this->createcommentform = new \Radchasay\Comment\HTMLForm\CreateCommentForm(self::$di, 1);
     }
 
     public function testCreatePostForm()
     {
-        $this->createpostform = new \Radchasay\Comment\HTMLForm\CreatePostForm($this->di);
+        $this->createpostform = new \Radchasay\Comment\HTMLForm\CreatePostForm(self::$di);
     }
 //
 //

@@ -150,7 +150,7 @@ return [
             "shared" => true,
             "callback" => function () {
                 $obj = new \Anax\Database\DatabaseQueryBuilder();
-                $obj->configure("database.php");
+                $obj->configure(__DIR__ . "/database.php");
                 return $obj;
             }
         ],
