@@ -52,7 +52,7 @@ return [
             "callback" => function () {
                 $view = new \Anax\View\ViewCollection();
                 $view->setDI($this);
-                $view->configure("view.php");
+                $view->configure(__DIR__ ."/view.php");
                 return $view;
             }
         ],

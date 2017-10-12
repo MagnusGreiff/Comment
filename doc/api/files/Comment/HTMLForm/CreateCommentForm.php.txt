@@ -26,20 +26,20 @@ class CreateCommentForm extends FormModel
                 "legend" => "Create new comment",
             ],
             [
-                "text"    => [
-                    "type"     => "text"
-                ],
+                    "text"    => [
+                        "type"     => "text"
+                    ],
 
-                "hidden" => [
-                    "type"       => "hidden",
-                    "value"      => $id,
-                ],
+                    "hidden" => [
+                        "type"       => "hidden",
+                        "value"      => $id,
+                    ],
 
-                "submit" => [
-                    "type"     => "submit",
-                    "value"    => "Create comment",
-                    "callback" => [$this, "callbackSubmit"],
-                ],
+                    "submit" => [
+                        "type"     => "submit",
+                        "value"    => "Create comment",
+                        "callback" => [$this, "callbackSubmit"],
+                    ],
             ]
         );
     }
@@ -55,16 +55,19 @@ class CreateCommentForm extends FormModel
     {
         // Get values from the submitted form
         //
-        $post = new Comment();
-        $post->setDB($this->di->get("db"));
-        $post->commenttext = $this->form->value("text");
-        $post->idpost = $this->form->value("hidden");
-        $post->postuser = $this->di->get("session")->get("email");
+        $comment = new Comment();
+        $comment->setDB($this->di->get("db"));
+        $data = $this->form->value("text");
+        $text = $this->di->get("textfilter")->doFilter($data, ["bbcode", "clickable",
+        "shortcode", "markdown", "purify"]);
+        $comment->commenttext = $text;
+        $comment->idpost = $this->form->value("hidden");
+        $comment->postuser = $this->di->get("session")->get("email");
 
 
-        $post->save();
+        $comment->save();
 
-        $url = $this->di->get("url")->create("comment/retrieve/$post->idpost");
+        $url = $this->di->get("url")->create("comment/retrieve/$comment->idpost");
         $this->di->get("response")->redirect($url);
         return true;
     }

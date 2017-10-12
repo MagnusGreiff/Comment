@@ -17,6 +17,7 @@ class Comment extends ActiveRecordModel
      * @var string $tableName name of the database table.
      */
     protected $tableName = "Comments";
+    //protected $idField = 'idcomment';
 
     /**
      * Columns in the table.
@@ -30,7 +31,13 @@ class Comment extends ActiveRecordModel
 
     public function getInformation($email)
     {
-        $res = $this->find("email", $email);
+        $res = $this->find("postuser", $email);
+        return $res;
+    }
+
+    public function getAllCommentsFromSpecificPost($sql, $params)
+    {
+        $res = $this->findAllSql($sql, $params);
         return $res;
     }
 }

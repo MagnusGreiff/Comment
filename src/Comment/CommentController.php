@@ -23,7 +23,8 @@ class CommentController implements InjectionAwareInterface
         $comment = new Comment();
         $comment->setDb($this->di->get("db"));
         $comment->delete("idcomment", $commentId);
-        $url = $_SERVER["HTTP_REFERER"];
+        $createUrl = $this->di->get("url")->create("comment/viewAllPosts");
+        $url = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : $createUrl;
         $this->di->get("response")->redirect($url);
     }
 
@@ -100,7 +101,7 @@ class CommentController implements InjectionAwareInterface
         } else {
             $login = $this->di->get("url")->create("user/login");
             $this->di->get("response")->redirect($login);
-            exit;
+            return false;
         }
     }
 

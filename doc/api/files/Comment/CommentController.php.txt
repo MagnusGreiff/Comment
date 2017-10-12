@@ -4,74 +4,137 @@ namespace Radchasay\Comment;
 
 use \Anax\DI\InjectionAwareInterface;
 use \Anax\DI\InjectionAwareTrait;
+use \Radchasay\Comment\Post;
+use \Radchasay\Comment\Comment;
+use \Radchasay\User\User;
+use \Radchasay\Comment\HTMLForm\CreatePostForm;
+use \Radchasay\Comment\HTMLForm\CreateCommentForm;
+use \Radchasay\Comment\HTMLForm\UpdateCommentForm;
 
 /**
- * A controller for commentsystem
- *
- * @SuppressWarnings(PHPMD.ExitExpression)
- * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * CommentModel
  */
 class CommentController implements InjectionAwareInterface
 {
-
     use InjectionAwareTrait;
-
-    public function checkLogin($modelName, $id = null)
-    {
-        if ($this->di->get("session")->has("email")) {
-            if ($id !== null) {
-                $this->di->get("commentModel")->$modelName($id);
-            }
-            $this->di->get("commentModel")->$modelName();
-        } else {
-            $login = $this->di->get("url")->create("user/login");
-            $this->di->get("response")->redirect($login);
-            exit;
-        }
-    }
-
-    public function commentConnect()
-    {
-        $this->di->get("database")->connect();
-    }
 
     public function deleteComment($commentId)
     {
-        $this->di->get("commentModel")->deleteComment($commentId);
+        $comment = new Comment();
+        $comment->setDb($this->di->get("db"));
+        $comment->delete("idcomment", $commentId);
+        $url = $_SERVER["HTTP_REFERER"];
+        $this->di->get("response")->redirect($url);
     }
 
-    public function editComment($commentId)
+    public function editComment($commentid)
     {
-        $this->di->get("commentModel")->editComment($commentId);
+        $title = "Update comment";
+        $view = $this->di->get("view");
+        $pageRender = $this->di->get("pageRender");
+        $form = new UpdateCommentForm($this->di, $commentid);
+
+        $form->check();
+
+        $data = [
+            "form" => $form->getHTML(),
+        ];
+
+        $view->add("comment/editComment", $data);
+
+        $pageRender->renderPage(["title" => $title]);
     }
-    // public function editCommentSubmit()
-    // {
-    //     $data = $this->di->get("request")->getPost();
-    //     $this->di->get("commentModel")->editCommentSubmit($data);
-    // }
-
-
-
-    public function newPost()
-    {
-        $this->di->get("commentModel")->newPost();
-    }
-
 
     public function viewAllPosts()
     {
-        $this->di->get("commentModel")->viewAllPosts();
+        $title = "Retrieve all posts";
+        $view = $this->di->get("view");
+        $pageRender = $this->di->get("pageRender");
+        $post = new Post();
+        $post->setDb($this->di->get("db"));
+
+        $data = [
+            "items" => $post->findAll(),
+        ];
+
+        $view->add("comment/viewAllPosts", $data);
+
+        $pageRender->renderPage(["title" => $title]);
     }
 
+    public function newPost()
+    {
+        $title = "Create new post";
+        $view = $this->di->get("view");
+        $pageRender = $this->di->get("pageRender");
+        $form = new CreatePostForm($this->di);
+
+        $form->check();
+
+        $data = [
+            "form" => $form->getHTML(),
+        ];
+
+        $view->add("comment/addNewPost", $data);
+
+        $pageRender->renderPage(["title" => $title]);
+    }
 
     public function newComment($id)
     {
-        $this->checkLogin("newComment", $id);
+        if ($this->di->get("session")->has("email")) {
+            $title = "Create new comment";
+            $view = $this->di->get("view");
+            $pageRender = $this->di->get("pageRender");
+            $form = new CreateCommentForm($this->di, $id);
+
+            $form->check();
+
+            $data = [
+                "form" => $form->getHTML(),
+            ];
+
+            $view->add("comment/addNewComment", $data);
+
+            $pageRender->renderPage(["title" => $title]);
+        } else {
+            $login = $this->di->get("url")->create("user/login");
+            $this->di->get("response")->redirect($login);
+            return false;
+        }
     }
 
     public function postAndComments($id)
     {
-        $this->di->get("commentModel")->postAndComments($id);
+        $title = "Retrieve one post with comments";
+        $view = $this->di->get("view");
+        $pageRender = $this->di->get("pageRender");
+        $post = new Post();
+        $post->setDb($this->di->get("db"));
+        if ($this->di->get("session")->has("email")) {
+            $user = new User();
+            $user->setDb($this->di->get("db"));
+            $email = $this->di->get("session")->get("email");
+            $userInfo = $user->find("email", $email);
+            $permissions = $userInfo->permissions;
+        } else {
+            $permissions = "user";
+        }
+
+        $comment = new Comment();
+        $comment->setDb($this->di->get("db"));
+        $sql = "Call CheckComment(?)";
+
+
+        $data = [
+            "post" => $post->find("id", $id),
+            "comments" => $comment->getAllCommentsFromSpecificPost($sql, [$id]),
+            "permissions" => $permissions
+        ];
+
+        $view->add("comment/onePostWithComment", $data);
+
+        $pageRender->renderPage(["title" => $title]);
     }
 }
 

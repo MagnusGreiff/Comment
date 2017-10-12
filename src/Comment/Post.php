@@ -56,9 +56,9 @@ class Post extends ActiveRecordModel
     //     return password_verify($password, $this->password);
     // }
 
-    public function getInformation($email)
+    public function getInformation($name)
     {
-        $res = $this->find("postname", $email);
+        $res = $this->find("postname", $name);
         return $res;
     }
 }

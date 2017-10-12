@@ -110,6 +110,45 @@ class ActiveRecordModel
 
 
     /**
+     * Find and return all matching a search criteria of
+     * for example `id = ?` or `id IN [?, ?]`.
+     *
+     * @param string $where to use in where statement.
+     * @param mixed  $value to use in where statement.
+     *
+     * @return array of object of this class
+     */
+    public function findAllWhere($where, $value)
+    {
+        $this->checkDb();
+        $params = is_array($value) ? $value : [$value];
+        return $this->db->connect()
+                        ->select()
+                        ->from($this->tableName)
+                        ->where($where)
+                        ->execute($params)
+                        ->fetchAllClass(get_class($this));
+    }
+
+
+    /**
+     * Execute rawsql
+     * @param string $sql rawsql
+     * @param array $params params
+     *
+     * @return array
+     */
+    public function findAllSql($sql, $params)
+    {
+        $this->checkDb();
+        return $this->db->connect()
+                        ->execute($sql, $params)
+                        ->fetchAllClass(get_class($this));
+    }
+
+
+
+    /**
      * Save current object/row, insert if id is missing and do an
      * update if the id exists.
      *
@@ -170,6 +209,9 @@ class ActiveRecordModel
                   ->where("$setId = ?")
                   ->execute($values);
     }
+
+
+    
 
 
 
