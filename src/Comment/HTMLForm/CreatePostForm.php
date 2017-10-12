@@ -28,14 +28,10 @@ class CreatePostForm extends FormModel
             [
                 "title" => [
                     "type" => "text",
-                    //"description" => "Here you can place a description.",
-                    //"placeholder" => "Here is a placeholder",
                 ],
 
                 "text" => [
                     "type" => "text",
-                    //"description" => "Here you can place a description.",
-                    //"placeholder" => "Here is a placeholder",
                 ],
 
                 "name" => [
