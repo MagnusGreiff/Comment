@@ -1,3 +1,6 @@
+[![CircleCI](https://circleci.com/gh/MagnusGreiff/Comment.svg?style=svg)](https://circleci.com/gh/MagnusGreiff/Comment)
+[![Build Status](https://travis-ci.org/MagnusGreiff/Comment.svg?branch=master)](https://travis-ci.org/MagnusGreiff/Comment)
+
 Radchasay comment
 ==================================
 
