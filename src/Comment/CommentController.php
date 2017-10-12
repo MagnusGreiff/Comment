@@ -60,7 +60,7 @@ class CommentController implements InjectionAwareInterface
 
         $view->add("comment/viewAllPosts", $data);
 
-        $pageRender->renderPage(["title" => $title]);
+        return $pageRender->renderPage(["title" => $title]);
     }
 
     public function newPost()
