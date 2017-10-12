@@ -77,26 +77,32 @@ class CommentTest extends \PHPUnit\Framework\TestCase
     }
 
 
-    // public function testCreateCommentAndDelete()
-    // {
-    //     $this->comment->setDb($this->di->get("db"));
-    //     $this->comment->commenttext = "halloj";
-    //     $this->comment->idpost = 2;
-    //     $this->comment->postuser = "comment@comment.com";
-    //
-    //     $this->comment->save();
-    //
-    //     $res = $this->comment->getInformation("comment@comment.com");
-    //
-    //     $this->assertEquals($res->postuser, "comment@comment.com");
-    //
-    //     var_dump($res->idcomment);
-    //
-    //     // var_dump($res->idcomment);
-    //     $this->commentController->deleteComment($res->idcomment);
-    //     // $res = $this->comment->getInformation("comment@comment.com");
-    //     // $this->assertEquals($res->postuser, false);
-    //
-    //
-    // }
+    public function testCreateCommentAndDelete()
+    {
+        ob_start();
+        $newComment = new \Radchasay\Comment\Comment();
+        $newComment->setDB($this->di->get("db"));
+        $newComment->commenttext = "halloj";
+        $newComment->idpost = 2;
+        $newComment->postuser = "jfsd923487(/)(jfsdfjs)@hej.com";
+
+        $newComment->save();
+
+        $res = $newComment->getInformation("jfsd923487(/)(jfsdfjs)@hej.com");
+
+        var_dump($res->idcomment);
+
+        $this->commentController->deleteComment($res->idcomment);
+
+        var_dump(ob_get_clean());
+    }
+
+
+
+    public function testViewAllPosts()
+    {
+        ob_start();
+        $this->commentController->viewAllPosts();
+        var_dump(ob_get_clean());
+    }
 }
