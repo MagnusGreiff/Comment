@@ -1,5 +1,8 @@
 [![CircleCI](https://circleci.com/gh/MagnusGreiff/Comment.svg?style=svg)](https://circleci.com/gh/MagnusGreiff/Comment)
 [![Build Status](https://travis-ci.org/MagnusGreiff/Comment.svg?branch=master)](https://travis-ci.org/MagnusGreiff/Comment)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MagnusGreiff/Comment/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MagnusGreiff/Comment/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/MagnusGreiff/Comment/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/MagnusGreiff/Comment/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/MagnusGreiff/Comment/badges/build.png?b=master)](https://scrutinizer-ci.com/g/MagnusGreiff/Comment/build-status/master)
 
 Radchasay comment
 ==================================
