@@ -98,14 +98,32 @@ class CommentTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($status, 200);
     }
 
-    // public function testNewComment()
-    // {
-    //     self::$di->get("session")->set("email", "mangegreiff@gmail.com");
-    //     $controller = new CommentController();
-    //     $controller->setDI(self::$di);
-    //     list($body, $data, $status) = $controller->newComment(1);
-    //     var_dump($status);
-    // }
+    /**
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
+    public function testNewComment()
+    {
+        self::$di->get("session")->set("email", "mangegreiff@gmail.com");
+        $controller = new CommentController();
+        $controller->setDI(self::$di);
+        list($body, $data, $status) = $controller->newComment(1);
+        $this->assertEquals($data["title"], "Create new comment");
+        $this->assertEquals($data["stylesheets"][0], "css/style.css");
+        $this->assertEquals($status, 200);
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
+    public function testNewPost()
+    {
+        $controller = new CommentController();
+        $controller->setDI(self::$di);
+        list($body, $data, $status) = $controller->newPost();
+        $this->assertEquals($data["title"], "Create new post");
+        $this->assertEquals($data["stylesheets"][0], "css/style.css");
+        $this->assertEquals($status, 200);
+    }
 
     public function testObject()
     {
