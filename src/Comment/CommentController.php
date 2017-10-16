@@ -43,7 +43,7 @@ class CommentController implements InjectionAwareInterface
 
         $view->add("comment/editComment", $data);
 
-        $pageRender->renderPage(["title" => $title]);
+        return $pageRender->renderPage(["title" => $title]);
     }
 
     public function viewAllPosts()
@@ -78,7 +78,7 @@ class CommentController implements InjectionAwareInterface
 
         $view->add("comment/addNewPost", $data);
 
-        $pageRender->renderPage(["title" => $title]);
+        return $pageRender->renderPage(["title" => $title]);
     }
 
     public function newComment($id)
@@ -97,7 +97,7 @@ class CommentController implements InjectionAwareInterface
 
             $view->add("comment/addNewComment", $data);
 
-            $pageRender->renderPage(["title" => $title]);
+            return $pageRender->renderPage(["title" => $title]);
         } else {
             $login = $this->di->get("url")->create("user/login");
             $this->di->get("response")->redirect($login);
@@ -135,6 +135,6 @@ class CommentController implements InjectionAwareInterface
 
         $view->add("comment/onePostWithComment", $data);
 
-        $pageRender->renderPage(["title" => $title]);
+        return $pageRender->renderPage(["title" => $title]);
     }
 }
