@@ -66,21 +66,6 @@ class UserLoginForm extends FormModel
         $email = $this->form->value("email");
         $password = $this->form->value("password");
 
-        // Try to login
-        /* $db = $this->di->get("db");
-         $db->connect();
-         $user = $db->select("password")
-             ->from("User")
-             ->where("acronym = ?")
-             ->executeFetch([$acronym]);
-
-         // $user is false if user is not found
-         if (!$user || !password_verify($password, $user->password)) {
-             $this->form->rememberValues();
-             $this->form->addOutput("User or password did not match.");
-             return false;
-         }*/
-
         $user = new User();
         $user->setDB($this->di->get("db"));
         $res = $user->verifyPassword($email, $password);
@@ -101,6 +86,7 @@ class UserLoginForm extends FormModel
 
     public function createUser()
     {
+        $this->di->get("session")->set("create", "true");
         $url = $this->di->get("url")->create("user/create");
         $this->di->get("response")->redirect($url);
     }

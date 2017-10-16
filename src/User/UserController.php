@@ -69,9 +69,12 @@ class UserController implements
         $title = "A login page";
         $view = $this->di->get("view");
         $pageRender = $this->di->get("pageRender");
-        if ($this->di->get("session")->has("email")) {
-            $url = $this->di->get("url")->create("user/profile");
-            $this->di->get("response")->redirect($url);
+        $url = $this->di->get("url");
+        $response = $this->di->get("response");
+        $session = $this->di->get("session");
+        if ($session->has("email")) {
+            $url = $url->create("user/profile");
+            $response->redirect($url);
         } else {
             $form = new UserLoginForm($this->di);
 
@@ -83,7 +86,7 @@ class UserController implements
 
             $view->add("default1/article", $data);
 
-            $pageRender->renderPage(["title" => $title]);
+            $pageRender->renderLoginAndCreate(["title" => $title]);
         }
     }
 
@@ -99,6 +102,7 @@ class UserController implements
      */
     public function getPostCreateUser()
     {
+        $this->di->get("session")->set("create", "true");
         $title = "A create user page";
         $view = $this->di->get("view");
         $pageRender = $this->di->get("pageRender");
@@ -112,7 +116,7 @@ class UserController implements
 
         $view->add("default1/article", $data);
 
-        $pageRender->renderPage(["title" => $title]);
+        $pageRender->renderLoginAndCreate(["title" => $title]);
     }
 
 
@@ -123,9 +127,9 @@ class UserController implements
         $pageRender = $this->di->get("pageRender");
         $user = new User();
         $user->setDb($this->di->get("db"));
-
+        $session = $this->di->get("session");
         $data = [
-            "content" => $user->getInformation($this->di->get("session")->get("email")),
+            "content" => $user->getInformation($session->get("email")),
         ];
 
         $view->add("users/profile", $data);
@@ -135,29 +139,35 @@ class UserController implements
 
     public function logout()
     {
-        $login = $this->di->get("url")->create("user/login");
+        $url = $this->di->get("url");
+        $response = $this->di->get("response");
+        $session = $this->di->get("session");
+        $login = $url->create("user/login");
 
-        if ($this->di->get("session")->has("email")) {
-            $this->di->get("session")->delete("email");
-            $this->di->get("response")->redirect($login);
+        if ($session->has("email")) {
+            $session->delete("email");
+            $response->redirect($login);
         } else {
-            $this->di->get("response")->redirect($login);
+            $response->redirect($login);
         }
 
         $hasSession = session_status() == PHP_SESSION_ACTIVE;
 
         if (!$hasSession) {
-            $this->di->get("response")->redirect($login);
+            $response->redirect($login);
             return true;
         }
     }
 
     public function checkLogin()
     {
-        $login = $this->di->get("url")->create("user/login");
+        $url = $this->di->get("url");
+        $response = $this->di->get("response");
+
+        $login = $url->create("user/login");
         $hasSession = session_status() == PHP_SESSION_ACTIVE;
         if (!$hasSession) {
-            $this->di->get("response")->redirect($login);
+            $response->redirect($login);
             return true;
         }
     }
@@ -189,8 +199,9 @@ class UserController implements
             $title = "A collection of items";
             $view = $this->di->get("view");
             $pageRender = $this->di->get("pageRender");
+            $db = $this->di->get("db");
             $user = new User();
-            $user->setDb($this->di->get("db"));
+            $user->setDb($db);
 
             $data = [
                 "items" => $user->findAll(),
@@ -200,6 +211,24 @@ class UserController implements
 
             $pageRender->renderPage(["title" => $title]);
         }
+    }
+
+    public function getAllUsersPublic()
+    {
+        $title = "All Users";
+        $view = $this->di->get("view");
+        $pageRender = $this->di->get("pageRender");
+        $db = $this->di->get("db");
+        $user = new User();
+        $user->setDb($db);
+
+        $data = [
+            "items" => $user->findAll(),
+        ];
+
+        $view->add("users/showAll", $data);
+
+        $pageRender->renderPage(["title" => $title]);
     }
 
     public function createUser()
@@ -266,39 +295,68 @@ class UserController implements
 
     public function checkUserIdMatch($id)
     {
-        if ($this->di->get("session")->has("email")) {
-            $email = $this->di->get("session")->get("email");
+        $url = $this->di->get("url");
+        $response = $this->di->get("response");
+        $session = $this->di->get("session");
+        $db = $this->di->get("db");
+
+        if ($session->has("email")) {
+            $email = $session->get("email");
             $user = new User();
-            $user->setDb($this->di->get("db"));
+            $user->setDb($db);
             $res = $user->find("email", $email);
             if ($res->id != $id) {
-                $url = $this->di->get("url")->create("user/profile");
-                $this->di->get("response")->redirect($url);
+                $url = $url->create("user/profile");
+                $response->redirect($url);
                 return false;
             }
             return true;
         } else {
-            $url = $this->di->get("url")->create("user/profile");
-            $this->di->get("response")->redirect($url);
+            $url = $url->create("user/profile");
+            $response->redirect($url);
         }
     }
 
     public function checkAdminLoggedIn()
     {
-        if ($this->di->get("session")->has("email")) {
-            $email = $this->di->get("session")->get("email");
+        $url = $this->di->get("url");
+        $response = $this->di->get("response");
+        $session = $this->di->get("session");
+        $db = $this->di->get("db");
+
+        if ($session->has("email")) {
+            $email = $session->get("email");
             $user = new User();
-            $user->setDb($this->di->get("db"));
+            $user->setDb($db);
             $res = $user->find("email", $email);
 
             if (!$res->permissions == "admin" || $res->permissions == "user") {
-                $url = $this->di->get("url")->create("user/login");
-                $this->di->get("response")->redirect($url);
+                $url = $url->create("user/login");
+                $response->redirect($url);
             }
             return true;
         } else {
-            $url = $this->di->get("url")->create("user/login");
-            $this->di->get("response")->redirect($url);
+            $url = $url->create("user/login");
+            $response->redirect($url);
         }
+    }
+
+    public function checkLoginPage()
+    {
+        $session = $this->di->get("session");
+
+        if (!$session->has("email")) {
+            if ($session->has("create")) {
+                return $this->getPostCreateUser();
+            } else {
+                return $this->getPostLogin();
+            }
+        }
+    }
+
+
+    public function checkIfLoggedIn()
+    {
+        return $this->checkLoginPage();
     }
 }

@@ -53,6 +53,12 @@ class CreateUserForm extends FormModel
                     "value" => "Create user",
                     "callback" => [$this, "callbackSubmit"]
                 ],
+
+                "create" => [
+                    "type"     => "submit",
+                    "value"    => "Back to login",
+                    "callback" => [$this, "backToLogin"],
+                ],
             ]
         );
     }
@@ -80,6 +86,11 @@ class CreateUserForm extends FormModel
             return false;
         }
 
+        if ($password == null || $email == null || $name == null || $passwordAgain == null) {
+            $this->form->addOutput("Please fill all inputs!");
+            return false;
+        }
+
         // Save to database
         /*$db = $this->di->get("db");
         $password = password_hash($password, PASSWORD_DEFAULT);
@@ -99,5 +110,12 @@ class CreateUserForm extends FormModel
         $url = $this->di->get("url")->create("user/login");
         $this->di->get("response")->redirect($url);
         return true;
+    }
+
+    public function backToLogin()
+    {
+        $this->di->get("session")->delete("create");
+        $url = $this->di->get("url")->create("user/login");
+        $this->di->get("response")->redirect($url);
     }
 }
