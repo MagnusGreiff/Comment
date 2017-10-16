@@ -28,5 +28,12 @@ return [
                 return $obj;
             }
         ],
+        "gravatar" => [
+            "shared" => true,
+            "callback" => function () {
+                $obj = new \Radchasay\Gravatar\Gravatar();
+                return $obj;
+            }
+        ]
     ]
 ];
