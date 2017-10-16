@@ -4,9 +4,8 @@ $login = $di->url->create("user/login");
 $currentUser = $di->get("session")->has("email") ? $di->get("session")->get("email") : "";
 $deleteComment = $di->url->create("comment/deleteComment");
 $editComment = $di->url->create("comment/editComment");
+$gravtar = $this->di->get("gravatar");
 
-
-var_dump($comment);
 ?>
 
 <main class="postsAndComments">
@@ -26,16 +25,10 @@ var_dump($comment);
     </div>
     <div class="comments">
         <?php foreach ($comments as $con => $value) : ?>
-            <?php
-            $email = $value->Author;
-            $default = "http://www.student.bth.se/~magp16/dbwebb-kurser/design/me/anax-flat/htdocs/img/image1.jpeg";
-            $size = 40;
-            $grav_url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?d=wavatar" . urlencode($default) . "&s=" . $size;
-            ?>
             <div>
                 <h5>Text: <?= $value->commenttext ?></h5>
                 <h6>Author: <?= $value->Author ?></h6>
-                <img src="<?php echo $grav_url; ?>" alt=""/>
+                <img src="<?php echo $gravatar->getGravatar($value->Author, 40); ?>" alt=""/>
                 <?php if ($currentUser === $value->Author || $permissions === "admin") : ?>
                     <a href="<?= $deleteComment . "/$value->idcomment" ?>">Delete Comment</a>
                     <a href="<?= $editComment . "/$value->idcomment" ?>">Edit Comment</a>

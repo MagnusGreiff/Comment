@@ -3,10 +3,8 @@ namespace Anax\View;
 
 $logout = url("user/logout");
 $adminTools = url("admin/viewUsers");
-$email = $content->email;
-$default = "http://www.student.bth.se/~magp16/dbwebb-kurser/design/me/anax-flat/htdocs/img/image1.jpeg";
-$size = 40;
-$grav_url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?d=wavatar" . urlencode($default) . "&s=" . $size;
+
+$gravatar = $this->di->get("gravatar");
 
 
 ?>
@@ -20,7 +18,7 @@ $grav_url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) .
         <p>Namn: <?= $content->name ?></p>
         <p>Ålder: <?= $content->age ?></p>
         <p>Id: <?= $content->id ?></p>
-        <img src="<?php echo $grav_url; ?>" alt="Image"/>
+        <img src="<?php echo $gravatar->getGravatar($content->email, 40) ?>" alt="Image"/>
     </div>
     <?php if ($content->permissions === "admin") : ?>
         <p><a href="<?= $adminTools ?>">User Management</a></p>
