@@ -31,11 +31,6 @@ class ViewAllTest extends \PHPUnit\Framework\TestCase
     //    $di = self::$di;
 
         self::$db = self::$di->get("db");
-        // self::$db = new \Anax\Database\DatabaseQueryBuilder([
-        //     "dsn" => "sqlite::memory:",
-        //     "table_prefix" => "radchasay_",
-        //     "debug_connect" => true,
-        // ]);
         self::$db->connect();
         self::$db->createTable(
             "Posts",
