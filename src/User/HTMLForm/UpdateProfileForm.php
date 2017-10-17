@@ -91,9 +91,9 @@ class UpdateProfileForm extends FormModel
         $user = new User();
         $user->setDb($this->di->get("db"));
         $user->find("id", $this->form->value("id"));
-        $user->email = $this->form->value("email");
-        $user->name = $this->form->value("name");
-        $user->age = $this->form->value("age");
+        $user->email = htmlentities($this->form->value("email"));
+        $user->name = htmlentities($this->form->value("name"));
+        $user->age = htmlentities($this->form->value("age"));
         $user->save();
         $this->di->get("session")->set("email", $user->email);
         $url = $this->di->get("url")->create("user/login");

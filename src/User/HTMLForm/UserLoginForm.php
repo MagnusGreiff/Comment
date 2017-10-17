@@ -63,8 +63,8 @@ class UserLoginForm extends FormModel
     public function callbackSubmit()
     {
         // Get values from the submitted form
-        $email = $this->form->value("email");
-        $password = $this->form->value("password");
+        $email = htmlentities($this->form->value("email"));
+        $password = htmlentities($this->form->value("password"));
 
         $user = new User();
         $user->setDB($this->di->get("db"));

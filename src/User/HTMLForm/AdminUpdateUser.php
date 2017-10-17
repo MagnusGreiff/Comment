@@ -93,9 +93,9 @@ class AdminUpdateUser extends FormModel
         $user = new User();
         $user->setDb($this->di->get("db"));
         $user->find("id", $this->form->value("id"));
-        $user->name = $this->form->value("name");
-        $user->email = $this->form->value("email");
-        $user->age = $this->form->value("age");
+        $user->name = htmlentities($this->form->value("name"));
+        $user->email = htmlentities($this->form->value("email"));
+        $user->age = htmlentities($this->form->value("age"));
         $user->save();
         $url = $this->di->get("url")->create("admin");
         $this->di->get("response")->redirect($url . "/update/{$user->id}");

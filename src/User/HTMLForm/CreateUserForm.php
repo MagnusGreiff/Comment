@@ -73,11 +73,11 @@ class CreateUserForm extends FormModel
     public function callbackSubmit()
     {
         // Get values from the submitted form
-        $name = $this->form->value("name");
-        $email = $this->form->value("email");
-        $age = $this->form->value("age");
-        $password = $this->form->value("password");
-        $passwordAgain = $this->form->value("password-again");
+        $name = htmlentities($this->form->value("name"));
+        $email = htmlentities($this->form->value("email"));
+        $age = htmlentities($this->form->value("age"));
+        $password = htmlentities($this->form->value("password"));
+        $passwordAgain = htmlentities($this->form->value("password-again"));
 
         // Check password matches
         if ($password !== $passwordAgain) {

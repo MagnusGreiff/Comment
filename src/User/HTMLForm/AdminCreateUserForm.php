@@ -28,26 +28,26 @@ class AdminCreateUserForm extends FormModel
                 "name" => [
                     "type" => "text",
                 ],
-                
+
                 "email" => [
                     "type" => "email",
                 ],
-                
+
                 "age" => [
                     "type" => "number",
                 ],
-                
+
                 "password" => [
                     "type" => "password",
                 ],
-                
+
                 "password-again" => [
                     "type"       => "password",
                     "validation" => [
                         "match" => "password",
                     ],
                 ],
-                
+
                 "submit" => [
                     "type"     => "submit",
                     "value"    => "Create user",
@@ -56,8 +56,8 @@ class AdminCreateUserForm extends FormModel
             ]
         );
     }
-    
-    
+
+
     /**
      * Callback for submit-button which should return true if it could
      * carry out its work and false if something failed.
@@ -67,26 +67,26 @@ class AdminCreateUserForm extends FormModel
     public function callbackSubmit()
     {
         // Get values from the submitted form
-        $name = $this->form->value("name");
-        $email = $this->form->value("email");
-        $age = $this->form->value("age");
-        $password = $this->form->value("password");
-        $passwordAgain = $this->form->value("password-again");
-        
+        $name = htmlentities($this->form->value("name"));
+        $email = htmlentities($this->form->value("email"));
+        $age = htmlentities($this->form->value("age"));
+        $password = htmlentities($this->form->value("password"));
+        $passwordAgain = htmlentities($this->form->value("password-again"));
+
         // Check password matches
         if ($password !== $passwordAgain) {
             $this->form->rememberValues();
             $this->form->addOutput("Password did not match.");
             return false;
         }
-        
+
         // Save to database
         /*$db = $this->di->get("db");
         $password = password_hash($password, PASSWORD_DEFAULT);
         $db->connect()
             ->insert("User", ["acronym", "password"])
             ->execute([$acronym, $password]);*/
-        
+
         $user = new User();
         $user->setDb($this->di->get("db"));
         $user->name = $name;
@@ -94,7 +94,7 @@ class AdminCreateUserForm extends FormModel
         $user->age = $age;
         $user->setPassword($password);
         $user->save();
-        
+
         //$this->form->addOutput("User was created.");
         $url = $this->di->get("url")->create("admin/viewUsers");
         $this->di->get("response")->redirect($url);
