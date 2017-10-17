@@ -12,6 +12,8 @@ use Radchasay\User\HTMLForm\UpdateProfileForm;
 use \Radchasay\User\HTMLForm\UserLoginForm;
 use \Radchasay\User\HTMLForm\CreateUserForm;
 use \Radchasay\User\HTMLForm\AdminDeleteUserForm;
+use \Radchasay\Comment\Post;
+use \Radchasay\Comment\Comment;
 
 /**
  * A controller class.
@@ -339,6 +341,37 @@ class UserController implements
             $url = $url->create("user/login");
             $response->redirect($url);
         }
+    }
+
+
+    public function getAllPostsAndCommentsFromSpecificUser($id)
+    {
+        $title = "All posts and comments from specific user";
+        $view = $this->di->get("view");
+        $pageRender = $this->di->get("pageRender");
+        $db = $this->di->get("db");
+
+        $user = new User();
+        $user->setDb($db);
+        $userInformation = $user->getInformationById($id);
+
+        $post = new Post();
+        $post->setDb($db);
+        $email = $user->email;
+        $postInformation = $post->getAllInformationWhere($email);
+
+        $comment = new Comment();
+        $comment->setDb($db);
+        $sql = "Call GetAllCommentsFromSpecific(?)";
+
+        $data = [
+            "posts" => $postInformation,
+            "comments" => $comment->getAllCommentsFromSpecificPost($sql, [$email])
+        ];
+
+        $view->add("users/all", $data);
+
+        $pageRender->renderPage(["title" => $title]);
     }
 
     public function checkLoginPage()

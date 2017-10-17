@@ -12,12 +12,12 @@ use \Anax\Database\ActiveRecordModel;
 
 class User extends ActiveRecordModel
 {
-    
+
     /**
      * @var string $tableName name of the database table.
      */
     protected $tableName = "Users";
-    
+
     /**
      * Columns in the table.
      *
@@ -32,8 +32,8 @@ class User extends ActiveRecordModel
     public $updated;
     public $deleted;
     public $active;
-    
-    
+
+
     /**
      * Set the password.
      *
@@ -45,8 +45,8 @@ class User extends ActiveRecordModel
     {
         $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
-    
-    
+
+
     /**
      * Verify the email and the password, if successful the object contains
      * all details from the database row.
@@ -61,10 +61,16 @@ class User extends ActiveRecordModel
         $this->find("email", $email);
         return password_verify($password, $this->password);
     }
-    
+
     public function getInformation($email)
     {
         $res = $this->find("email", $email);
         return $res;
+    }
+
+    public function getInformationById($id)
+    {
+            $res = $this->find("id", $id);
+            return $res;
     }
 }

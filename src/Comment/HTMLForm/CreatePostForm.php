@@ -34,10 +34,6 @@ class CreatePostForm extends FormModel
                     "type" => "text",
                 ],
 
-                "name" => [
-                    "type" => "text",
-                ],
-
                 "submit" => [
                     "type"     => "submit",
                     "value"    => "Create Post",
@@ -62,7 +58,7 @@ class CreatePostForm extends FormModel
         $post->setDB($this->di->get("db"));
         $post->posttitle = $this->form->value("title");
         $post->posttext = $this->form->value("text");
-        $post->postname = $this->form->value("name");
+        $post->postname = $this->di->get("session")->get("email");
 
 
         $post->save();
