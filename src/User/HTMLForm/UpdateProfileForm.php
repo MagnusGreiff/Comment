@@ -28,8 +28,7 @@ class UpdateProfileForm extends FormModel
             ],
             [
                 "id"    => [
-                    "type"     => "text",
-                    "readonly" => true,
+                    "type"     => "hidden",
                     "value"    => $profileInfo->id,
                 ],
                 "email" => [

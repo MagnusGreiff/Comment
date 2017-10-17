@@ -73,9 +73,9 @@ class UpdateCommentForm extends FormModel
         $comment = new Comment();
         $comment->setDb($this->di->get("db"));
         $comment->find("idcomment", $this->form->value("id"));
-        $data = $this->form->value("text");
-        $text = $this->di->get("textfilter")->doFilter($data, ["bbcode",
-        "clickable", "shortcode", "markdown", "purify"]);
+        $data = htmlentities($this->form->value("text"));
+        $text = htmlentities($this->di->get("textfilter")->doFilter($data, ["bbcode",
+        "clickable", "shortcode", "markdown", "purify"]));
         $comment->commenttext = $text;
         $id = $this->form->value("id");
         $comment->save("idcomment", $id);

@@ -57,9 +57,9 @@ class CreateCommentForm extends FormModel
         //
         $comment = new Comment();
         $comment->setDB($this->di->get("db"));
-        $data = $this->form->value("text");
-        $text = $this->di->get("textfilter")->doFilter($data, ["bbcode", "clickable",
-        "shortcode", "markdown", "purify"]);
+        $data = htmlentities($this->form->value("text"));
+        $text = htmlentities($this->di->get("textfilter")->doFilter($data, ["bbcode", "clickable",
+        "shortcode", "markdown", "purify"]));
         $comment->commenttext = $text;
         $comment->idpost = $this->form->value("hidden");
         $comment->postuser = $this->di->get("session")->get("email");

@@ -28,9 +28,7 @@ class AdminUpdateUser extends FormModel
             ],
             [
                 "id" => [
-                    "type"       => "text",
-                    "validation" => ["not_empty"],
-                    "readonly"   => true,
+                    "type"       => "hidden",
                     "value"      => $user->id,
                 ],
 

@@ -56,9 +56,9 @@ class CreatePostForm extends FormModel
         //
         $post = new Post();
         $post->setDB($this->di->get("db"));
-        $post->posttitle = $this->form->value("title");
-        $post->posttext = $this->form->value("text");
-        $post->postname = $this->di->get("session")->get("email");
+        $post->posttitle = htmlentities($this->form->value("title"));
+        $post->posttext = htmlentities($this->form->value("text"));
+        $post->postname = htmlentities($this->di->get("session")->get("email"));
 
 
         $post->save();
