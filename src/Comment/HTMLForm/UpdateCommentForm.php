@@ -62,6 +62,7 @@ class UpdateCommentForm extends FormModel
     }
 
 
+
     /**
      * Callback for submit-button which should return true if it could
      * carry out its work and false if something failed.
