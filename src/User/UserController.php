@@ -14,9 +14,12 @@ use \Radchasay\User\HTMLForm\CreateUserForm;
 use \Radchasay\User\HTMLForm\AdminDeleteUserForm;
 use \Radchasay\Comment\Post;
 use \Radchasay\Comment\Comment;
+use \Radchasay\Comment\CommentComments;
 
 /**
  * A controller class.
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class UserController implements
     ConfigureInterface,
@@ -353,7 +356,7 @@ class UserController implements
 
         $user = new User();
         $user->setDb($db);
-        $userInformation = $user->getInformationById($id);
+        $user->getInformationById($id);
 
         $post = new Post();
         $post->setDb($db);
@@ -362,11 +365,11 @@ class UserController implements
 
         $comment = new Comment();
         $comment->setDb($db);
-        $sql = "Call GetAllCommentsFromSpecific(?)";
+
 
         $data = [
             "posts" => $postInformation,
-            "comments" => $comment->getAllCommentsFromSpecificPost($sql, [$email])
+            "comments" => $comment->getAllCommentAndPostsFromSpecificUser([$email]),
         ];
 
         $view->add("users/all", $data);
@@ -391,5 +394,15 @@ class UserController implements
     public function checkIfLoggedIn()
     {
         return $this->checkLoginPage();
+    }
+
+
+    public function returnId($email)
+    {
+        $user = new User();
+        $user->setDb($this->di->get("db"));
+        $user->getInformation($email);
+        $id = $user->id;
+        return $id;
     }
 }
