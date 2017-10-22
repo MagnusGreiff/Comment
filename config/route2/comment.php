@@ -2,7 +2,6 @@
 
 
 return [
-    "mount" => "comment",
     "routes" => [
         [
             "info"          => "Connect to database",
@@ -45,6 +44,18 @@ return [
             "requestMethod" => "get|post",
             "path" => "editComment/{id:digit}",
             "callable" => ["commentController", "editComment"]
+        ],
+        [
+            "info" => "Add new comment comment",
+            "requestMethod" => "get|post",
+            "path" => "newCommentComment/{id:digit}/{id:digit}",
+            "callable" => ["commentController", "newCommentComment"],
+        ],
+        [
+            "info" => "Delete comment comment",
+            "requestMethod" => "get|post",
+            "path" => "deleteCommentComment/{id:digit}",
+            "callable" => ["commentController", "deleteCommentComment"],
         ],
     ],
 ];

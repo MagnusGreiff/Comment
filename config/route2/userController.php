@@ -45,6 +45,18 @@ return [
             "requestMethod" => "get|post",
             "path" => "user/editProfile/{id:digit}",
             "callable" => ["userController", "editProfile"]
-        ]
+        ],
+        [
+            "info" => "All Users",
+            "requestMethod" => "get",
+            "path" => "user/showAll",
+            "callable" => ["userController", "getAllUsersPublic"]
+        ],
+        [
+            "info" => "All Things",
+            "requestMethod" => "get",
+            "path" => "user/all/{id:digit}",
+            "callable" => ["userController", "getAllPostsAndCommentsFromSpecificUser"]
+        ],
     ]
 ];
