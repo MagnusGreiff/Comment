@@ -28,36 +28,6 @@ class OverviewController implements
      */
     //private $data;
 
-
-    /**
-     * Description.
-     *
-     * @param datatype $variable Description
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function getIndex()
-    {
-        $title = "A index page";
-        $view = $this->di->get("view");
-        $pageRender = $this->di->get("pageRender");
-        $db = $this->di->get("db");
-
-        $user = new User();
-        $user->setDb($db);
-        $res = $user->getInformationLimit(5);
-
-        $data = [
-            "content" => "An index page",
-        ];
-
-        $view->add("default1/article", $data);
-
-        $pageRender->renderPage(["title" => $title]);
-    }
-
     public function overview()
     {
         $title = "Overview";
