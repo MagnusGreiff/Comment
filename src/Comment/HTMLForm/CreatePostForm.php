@@ -131,8 +131,8 @@ class CreatePostForm extends FormModel
 
             $p2c = new Post2Cat();
             $p2c->setDb($this->di->get("db"));
-            $p2c->cat_id = $id;
-            $p2c->post_id = $postId;
+            $p2c->catid = $id;
+            $p2c->postid = $postId;
 
             $p2c->save();
         }
