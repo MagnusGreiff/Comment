@@ -2,6 +2,9 @@
 
 namespace Radchasay\Gravatar;
 
+/**
+ * @SuppressWarnings(PHPMD)
+ */
 class Gravatar
 {
     public function getGravatar($email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array())
