@@ -36,7 +36,6 @@ class CommentController implements InjectionAwareInterface
 
         if (!empty($test)) {
             foreach ($test as $t) {
-                var_dump($t->idcommentc);
                 $this->deleteCommentComment($t->idcommentc, true);
                 $commentComments->getNext();
                 echo "deleted";
@@ -229,7 +228,6 @@ class CommentController implements InjectionAwareInterface
     {
         $cat = new PostCategory();
         $cat->setDb($this->di->get("db"));
-        // var_dump($cat->getId($category));
         $id = $cat->getId($category);
         return $id;
     }

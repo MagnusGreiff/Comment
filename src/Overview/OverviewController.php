@@ -49,8 +49,6 @@ class OverviewController implements
         $user->setDb($db);
         $res = $user->getInformationLimit(5);
 
-        var_dump($res);
-
         $data = [
             "content" => "An index page",
         ];

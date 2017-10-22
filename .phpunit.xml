@@ -16,6 +16,8 @@
                 <directory suffix=".php">src/Database</directory>
                 <directory suffix=".php">src/Gravatar</directory>
                 <directory suffix=".php">src/User</directory>
+                <directory suffix=".php">src/Overview</directory>
+                <directory suffix=".php">src/Tag</directory>
             </exclude>
         </whitelist>
     </filter>
