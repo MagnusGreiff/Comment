@@ -2,17 +2,15 @@
 
 namespace Anax\View;
 
-/**
- * View to display all books.
- */
-// Show all incoming variables/functions
-//var_dump(get_defined_functions());
-//echo showEnvironment(get_defined_vars());
-
 // Gather incoming variables and use default values if not set
 $items = isset($items) ? $items : null;
 
 $url = $this->di->get("url")->create("comment/newPost");
+
+$commentController = $this->di->get("commentController");
+$tag = $di->url->create("tag/tag/");
+
+
 
 ?>
 <div class="wrapper"><h1>Posts</h1>
@@ -25,14 +23,21 @@ $url = $this->di->get("url")->create("comment/newPost");
 
     <?php foreach ($items as $item) : ?>
         <?php
-        $url = $di->url->create("comment/retrieve/$item->id");
+        $tags = explode(",", $item[1][0]->Category);
+        $url = $di->url->create("comment/retrieve/" . $item[0]->postid);
+        $p = "<p> Tags: ";
+        foreach ($tags as $t) {
+            $id = $commentController->returnCatId($t);
+            $p .= '<a href=' . $tag . "/" . $t .'>' . $t . '</a> ';
+        }
+        $p .= "</p>";
         ?>
         <div class="post">
             <a href="<?= $url ?>">
-                <h2>Title: <?= $item->posttitle ?></h2>
+                <h2><?= $item[0]->posttitle ?></h2>
             </a>
-            <p>Text: <?= $item->posttext ?></p>
-            <p>Author: <?= $item->postname ?></p>
+            <?= $p ?>
+            <p>Author: <?= $item[0]->postname ?></p>
         </div>
     <?php endforeach; ?>
 </div>

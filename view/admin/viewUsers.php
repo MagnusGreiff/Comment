@@ -25,7 +25,7 @@ $urlToDelete = url("admin/delete");
         <a href="<?= $urlToCreate ?>">Create</a> |
         <a href="<?= $urlToDelete ?>">Delete</a>
     </p>
-    
+
     <?php if (!$items) : ?>
         <p>There are no items to show.</p>
         <?php return; ?>

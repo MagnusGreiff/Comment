@@ -2,15 +2,10 @@
 
 namespace Anax\View;
 
-/**
- * View to display all books.
- */
-// Show all incoming variables/functions
-//var_dump(get_defined_functions());
-//echo showEnvironment(get_defined_vars());
-
 // Gather incoming variables and use default values if not set
 $items = isset($items) ? $items : null;
+
+$showAll = $this->di->get("url")->create("user/all/");
 
 
 $gravatar = $this->di->get("gravatar");
@@ -18,7 +13,7 @@ $gravatar = $this->di->get("gravatar");
 // Create urls for navigation
 
 ?>
-<div class="wrapper"><h1>View all items</h1>
+<div class="wrapper"><h1>View All Users</h1>
 
     <?php if (!$items) : ?>
         <p>There are no items to show.</p>
@@ -33,14 +28,9 @@ $gravatar = $this->di->get("gravatar");
             <th>Permissions</th>
         </tr>
         <?php foreach ($items as $item) : ?>
-            <!-- <?php
-            // $default = "https://www.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802?d=identicon";
-            // $size = 40;
-            // $grav_url = "https://www.gravatar.com/avatar/" . md5(strtolower(trim($item->email))) . "?d=wavatar" . urlencode($default) . "&s=" . $size;
-             ?> -->
             <tr>
-                <td><?= $item->name ?></td>
-                <td><img src="<?php $gravatar->getGravatar($item->email) ?>" alt="Image"/></td>
+                <td><a href="<?= $showAll . "/" . $item->id ?>"><?= $item->name ?></a></td>
+                <td><img src="<?php echo $gravatar->getGravatar($item->email, 40) ?>" alt="Image"/></td>
                 <td><?= $item->age ?></td>
                 <td><?= $item->permissions ?></td>
             </tr>
