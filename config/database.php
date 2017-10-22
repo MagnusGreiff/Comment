@@ -18,11 +18,11 @@
         'dsn' => "mysql:host=127.0.0.1;dbname=anaxdb;",
         'username' => "anax",
         'password' => "anax",
-        'driver_options' => [\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"],
+        'driver_options' => [\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true, \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"],
         'table_prefix' => null,
         'fetch_mode' => \PDO::FETCH_OBJ,
         'session_key' => 'Anax\Database',
-        'verbose' => true,
+        'verbose' => false,
         'debug_connect' => true,
     ];
 // } else {
