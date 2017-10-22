@@ -8,6 +8,8 @@ use \Anax\Database\Exception\ActiveRecordException;
 /**
  * An implementation of the Active Record pattern to be used as
  * base class for database driven models.
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class ActiveRecordModel
 {
@@ -81,12 +83,52 @@ class ActiveRecordModel
      */
     public function find($column, $value)
     {
+        return $this->findWhere("$column = ?", $value);
+    }
+
+
+
+    /**
+     * Find and return first object by its tableIdColumn and use
+     * its data to populate this instance.
+     *
+     * @param integer $id to find or use $this->{$this->tableIdColumn}
+     *                    as default.
+     *
+     * @return this
+     */
+    public function findById($id = null)
+    {
+        $id = $id ?: $this->{$this->tableIdColumn};
+        return $this->findWhere("{$this->tableIdColumn} = ?", $id);
+    }
+
+
+
+    /**
+     * Find and return first object found by search criteria and use
+     * its data to populate this instance.
+     *
+     * The search criteria `$where` of can be set up like this:
+     *  `id = ?`
+     *  `id1 = ? and id2 = ?`
+     *
+     * The `$value` can be a single value or an array of values.
+     *
+     * @param string $where to use in where statement.
+     * @param mixed  $value to use in where statement.
+     *
+     * @return this
+     */
+    public function findWhere($where, $value)
+    {
         $this->checkDb();
+        $params = is_array($value) ? $value : [$value];
         return $this->db->connect()
                         ->select()
                         ->from($this->tableName)
-                        ->where("$column = ?")
-                        ->execute([$value])
+                        ->where($where)
+                        ->execute($params)
                         ->fetchInto($this);
     }
 
@@ -95,7 +137,7 @@ class ActiveRecordModel
     /**
      * Find and return all.
      *
-     * @return array
+     * @return array of object of this class
      */
     public function findAll()
     {
@@ -109,9 +151,40 @@ class ActiveRecordModel
 
 
 
+    public function findAllLimitOrderBy($order, $number)
+    {
+        $this->checkDb();
+        return $this->db->connect()
+                        ->select()
+                        ->from($this->tableName)
+                        ->orderBy($order)
+                        ->limit($number)
+                        ->execute()
+                        ->fetchAllClass(get_class($this));
+    }
+
+    public function findAllLimit($number)
+    {
+        $this->checkDb();
+        return $this->db->connect()
+                        ->select()
+                        ->from($this->tableName)
+                        ->limit($number)
+                        ->execute()
+                        ->fetchAllClass(get_class($this));
+    }
+
+
+
+
     /**
-     * Find and return all matching a search criteria of
-     * for example `id = ?` or `id IN [?, ?]`.
+     * Find and return all matching the search criteria.
+     *
+     * The search criteria `$where` of can be set up like this:
+     *  `id = ?`
+     *  `id IN [?, ?]`
+     *
+     * The `$value` can be a single value or an array of values.
      *
      * @param string $where to use in where statement.
      * @param mixed  $value to use in where statement.
@@ -133,17 +206,34 @@ class ActiveRecordModel
 
     /**
      * Execute rawsql
-     * @param string $sql rawsql
-     * @param array $params params
      *
      * @return array
      */
-    public function findAllSql($sql, $params)
+    public function findAllSql($sql, $params = [])
     {
         $this->checkDb();
         return $this->db->connect()
                         ->execute($sql, $params)
                         ->fetchAllClass(get_class($this));
+    }
+
+
+    public function next()
+    {
+        return $this->db->next();
+    }
+
+
+    /**
+     * Execute rawsql
+     *
+     * @return array
+     */
+    public function findAllSqlTest($sql, $params)
+    {
+        $this->checkDb();
+        return $this->db->connect()
+                        ->executeFetchAll($sql, $params);
     }
 
 
@@ -196,22 +286,19 @@ class ActiveRecordModel
      */
     protected function update($idName = null, $id = null)
     {
-         $this->checkDb();
-         $properties = $this->getProperties();
-         unset($properties['id']);
-         $columns = array_keys($properties);
-         $values  = array_values($properties);
-         $values[] = isset($this->id) ? $this->id : $id ;
-         $setId = $idName !== null ? $idName : "id";
+        $this->checkDb();
+        $properties = $this->getProperties();
+        unset($properties['id']);
+        $columns = array_keys($properties);
+        $values  = array_values($properties);
+        $values[] = isset($this->id) ? $this->id : $id ;
+        $setId = $idName !== null ? $idName : "id";
 
-         $this->db->connect()
-                  ->update($this->tableName, $columns)
-                  ->where("$setId = ?")
-                  ->execute($values);
+        $this->db->connect()
+                 ->update($this->tableName, $columns)
+                 ->where("$setId = ?")
+                 ->execute($values);
     }
-
-
-    
 
 
 
@@ -234,5 +321,11 @@ class ActiveRecordModel
                  ->execute([$id]);
 
         $this->id = null;
+    }
+
+
+    public function lastInsertId()
+    {
+        return $this->db->lastInsertId();
     }
 }
