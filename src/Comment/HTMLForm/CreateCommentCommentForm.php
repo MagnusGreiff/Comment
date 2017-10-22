@@ -4,20 +4,20 @@ namespace Radchasay\Comment\HTMLForm;
 
 use \Anax\HTMLForm\FormModel;
 use \Anax\DI\DIInterface;
-use \Radchasay\Comment\Comment;
+use \Radchasay\Comment\CommentComments;
 use \Radchasay\User\User;
 
 /**
  * Example of FormModel implementation.
  */
-class CreateCommentForm extends FormModel
+class CreateCommentCommentForm extends FormModel
 {
     /**
      * Constructor injects with DI container.
      *
      * @param Anax\DI\DIInterface $di a service container
      */
-    public function __construct(DIInterface $di, $id)
+    public function __construct(DIInterface $di, $idcomment, $idpost)
     {
         parent::__construct($di);
 
@@ -31,9 +31,14 @@ class CreateCommentForm extends FormModel
                         "type"     => "textarea"
                     ],
 
-                    "hidden" => [
+                    "hiddenid" => [
                         "type"       => "hidden",
-                        "value"      => $id,
+                        "value"      => $idcomment,
+                    ],
+
+                    "hiddenpost" => [
+                        "type" => "hidden",
+                        "value" => $idpost,
                     ],
 
                     "submit" => [
@@ -45,6 +50,7 @@ class CreateCommentForm extends FormModel
         );
     }
 
+
     /**
      * Callback for submit-button which should return true if it could
      * carry out its work and false if something failed.
@@ -54,26 +60,26 @@ class CreateCommentForm extends FormModel
     public function callbackSubmit()
     {
         // Get values from the submitted form
-
-        $comment = new Comment();
-        $comment->setDB($this->di->get("db"));
+        //
+        $commentComment = new CommentComments();
+        $commentComment->setDB($this->di->get("db"));
         $data = $this->form->value("text");
-        var_dump($data);
-        $text = $this->di->get("textfilter")->doFilter($data, ["shortcode", "markdown", "clickable", "bbcode"]);
-        $comment->commenttext = $text;
-        $comment->idpost = $this->form->value("hidden");
-        $comment->postuser = $this->di->get("session")->get("email");
+        $text = $this->di->get("textfilter")->doFilter($data, ["bbcode", "clickable",
+        "shortcode", "markdown", "purify"]);
+        $commentComment->textcomment = $text;
+        $commentComment->idcommentcomment = htmlentities($this->form->value("hiddenid"));
+        $commentComment->postuser = $this->di->get("session")->get("email");
 
+        $idpost = htmlentities($this->form->value("hiddenpost"));
         $user = new User();
         $user->setDb($this->di->get("db"));
-        $user->getInformation($comment->postuser);
+        $user->getInformation($commentComment->postuser);
         $user->points += 1;
 
-
-        $comment->save();
         $user->save();
+        $commentComment->save();
 
-        $url = $this->di->get("url")->create("comment/retrieve/$comment->idpost");
+        $url = $this->di->get("url")->create("comment/retrieve/$idpost");
         $this->di->get("response")->redirect($url);
         return true;
     }

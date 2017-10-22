@@ -6,10 +6,13 @@ use \Anax\DI\InjectionAwareInterface;
 use \Anax\DI\InjectionAwareTrait;
 use \Radchasay\Comment\Post;
 use \Radchasay\Comment\Comment;
+use \Radchasay\Comment\CommentComments;
+use \Radchasay\Comment\PostCategory;
 use \Radchasay\User\User;
 use \Radchasay\Comment\HTMLForm\CreatePostForm;
 use \Radchasay\Comment\HTMLForm\CreateCommentForm;
 use \Radchasay\Comment\HTMLForm\UpdateCommentForm;
+use \Radchasay\Comment\HTMLForm\CreateCommentCommentForm;
 
 /**
  * CommentModel
@@ -22,6 +25,24 @@ class CommentController implements InjectionAwareInterface
     {
         $comment = new Comment();
         $comment->setDb($this->di->get("db"));
+
+
+        $commentComments = new CommentComments();
+        $commentComments->setDb($this->di->get("db"));
+
+        $test = $commentComments->getAllCommentFromComments([$commentId]);
+
+        $commentComments->getNext();
+
+        if (!empty($test)) {
+            foreach ($test as $t) {
+                var_dump($t->idcommentc);
+                $this->deleteCommentComment($t->idcommentc, true);
+                $commentComments->getNext();
+                echo "deleted";
+            }
+        }
+
         $comment->delete("idcomment", $commentId);
         $createUrl = $this->di->get("url")->create("comment/viewAllPosts");
         $url = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : $createUrl;
@@ -54,8 +75,16 @@ class CommentController implements InjectionAwareInterface
         $post = new Post();
         $post->setDb($this->di->get("db"));
 
+        $posts = $post->getAllPosts();
+
+        $allPosts = [];
+
+        foreach ($posts as $p) {
+            array_push($allPosts, [$p, $post->getTags([$p->postid])]);
+        }
+
         $data = [
-            "items" => $post->findAll(),
+            "items" => $allPosts,
         ];
 
         $view->add("comment/viewAllPosts", $data);
@@ -112,29 +141,96 @@ class CommentController implements InjectionAwareInterface
         $pageRender = $this->di->get("pageRender");
         $post = new Post();
         $post->setDb($this->di->get("db"));
-        if ($this->di->get("session")->has("email")) {
-            $user = new User();
-            $user->setDb($this->di->get("db"));
-            $email = $this->di->get("session")->get("email");
-            $userInfo = $user->find("email", $email);
-            $permissions = $userInfo->permissions;
+        if ($post->checkId($id)) {
+            if ($this->di->get("session")->has("email")) {
+                $email = $this->di->get("session")->get("email");
+                $user = new User();
+                $user->setDb($this->di->get("db"));
+                $permissions = $user->returnPermissions($email);
+            } else {
+                $permissions = "user";
+            }
+
+            $comment = new Comment();
+            $comment->setDb($this->di->get("db"));
+            $comments = $comment->getAllCommentsFromSpecificPost([$id]);
+
+            $comment->getNext();
+
+            $commentComments = new CommentComments();
+            $commentComments->setDb($this->di->get("db"));
+
+            $allComments = [];
+
+            foreach ($comments as $comment) {
+                array_push($allComments, [$comment,
+                $commentComments->getAllCommentFromComments([$comment->idcomment])]);
+                $commentComments->getNext();
+            }
+
+            $data = [
+                "post" => $post->getPostInfo([$id]),
+                "comments" => $allComments,
+                "permissions" => $permissions,
+                "tags" => $post->getTags([$id])
+            ];
+
+            $view->add("comment/onePostWithComment", $data);
+
+            return $pageRender->renderPage(["title" => $title]);
         } else {
-            $permissions = "user";
+            $url = $this->di->get("url")->create("comment/viewAllPosts");
+            $this->di->get("response")->redirect($url);
         }
+    }
 
-        $comment = new Comment();
-        $comment->setDb($this->di->get("db"));
-        $sql = "Call CheckComment(?)";
+    public function newCommentComment($idcomment, $idpost)
+    {
+        if ($this->di->get("session")->has("email")) {
+            $title = "Create new comment";
+            $view = $this->di->get("view");
+            $pageRender = $this->di->get("pageRender");
+            $form = new CreateCommentCommentForm($this->di, $idcomment, $idpost);
+
+            $form->check();
+
+            $data = [
+                "form" => $form->getHTML(),
+            ];
+
+            $view->add("comment/addNewComment", $data);
+
+            return $pageRender->renderPage(["title" => $title]);
+        } else {
+            $login = $this->di->get("url")->create("user/login");
+            $this->di->get("response")->redirect($login);
+            return false;
+        }
+    }
+
+    public function deleteCommentComment($id, $nested = false)
+    {
+        if (!$nested) {
+            $commentcomments = new CommentComments();
+            $commentcomments->setDb($this->di->get("db"));
+            $commentcomments->delete("idcommentc", $id);
+            $createUrl = $this->di->get("url")->create("comment/viewAllPosts");
+            $url = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : $createUrl;
+            $this->di->get("response")->redirect($url);
+        } else {
+            $commentcomments = new CommentComments();
+            $commentcomments->setDb($this->di->get("db"));
+            $commentcomments->delete("idcommentc", $id);
+        }
+    }
 
 
-        $data = [
-            "post" => $post->find("id", $id),
-            "comments" => $comment->getAllCommentsFromSpecificPost($sql, [$id]),
-            "permissions" => $permissions
-        ];
-
-        $view->add("comment/onePostWithComment", $data);
-
-        return $pageRender->renderPage(["title" => $title]);
+    public function returnCatId($category)
+    {
+        $cat = new PostCategory();
+        $cat->setDb($this->di->get("db"));
+        // var_dump($cat->getId($category));
+        $id = $cat->getId($category);
+        return $id;
     }
 }

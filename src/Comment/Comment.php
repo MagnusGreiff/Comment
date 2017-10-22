@@ -35,9 +35,22 @@ class Comment extends ActiveRecordModel
         return $res;
     }
 
-    public function getAllCommentsFromSpecificPost($sql, $params)
+    public function getAllCommentsFromSpecificPost($params)
     {
+        $sql = "Call CheckComment(?)";
         $res = $this->findAllSql($sql, $params);
         return $res;
+    }
+
+    public function getAllCommentAndPostsFromSpecificUser($email)
+    {
+        $sql = "Call GetAllCommentsFromSpecific(?)";
+        $res = $this->findAllSql($sql, $email);
+        return $res;
+    }
+
+    public function getNext()
+    {
+        return $this->next();
     }
 }
