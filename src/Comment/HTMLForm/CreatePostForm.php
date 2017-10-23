@@ -68,7 +68,7 @@ class CreatePostForm extends FormModel
         $data = $this->form->value("text");
         $text = $this->di->get("textfilter")->doFilter($data, ["shortcode", "markdown", "clickable", "bbcode"]);
 
-        if (strlen($title) > 50 ) {
+        if (strlen($title) > 50) {
             $this->form->addOutput("Title is too long. Please fix!");
             return false;
         } else {

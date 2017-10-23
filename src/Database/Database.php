@@ -7,6 +7,8 @@ use \Anax\Database\Exception\Exception;
 /**
  * Database wrapper, provides a database API on top of PHP PDO for
  * enhancing the API and dealing with error reporting and tracking.
+ *
+ *@SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Database
 {
@@ -112,7 +114,7 @@ class Database
         return $this;
     }
 
-    
+
 
     public function next()
     {
