@@ -91,22 +91,23 @@ class CreateUserForm extends FormModel
             return false;
         }
 
-        // Save to database
-        /*$db = $this->di->get("db");
-        $password = password_hash($password, PASSWORD_DEFAULT);
-        $db->connect()
-            ->insert("User", ["acronym", "password"])
-            ->execute([$acronym, $password]);*/
-
         $user = new User();
         $user->setDb($this->di->get("db"));
-        $user->name = $name;
-        $user->email = $email;
-        $user->age = $age;
-        $user->setPassword($password);
-        $user->save();
+
+        if ($user->checkUserExists($email)) {
+            $user->name = $name;
+            $user->email = $email;
+            $user->age = $age;
+            $user->setPassword($password);
+            $user->save();
+        } else {
+            $this->form->addOutput("Email already in use");
+            return false;
+        }
+
 
         //$this->form->addOutput("User was created.");
+        $this->di->get("session")->delete("create");
         $url = $this->di->get("url")->create("user/login");
         $this->di->get("response")->redirect($url);
         return true;

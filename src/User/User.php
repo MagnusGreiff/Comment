@@ -70,8 +70,8 @@ class User extends ActiveRecordModel
 
     public function getInformationById($id)
     {
-            $res = $this->find("id", $id);
-            return $res;
+        $res = $this->find("id", $id);
+        return $res;
     }
 
     public function getInformationLimit($number)
@@ -85,5 +85,11 @@ class User extends ActiveRecordModel
         $userInfo = $this->find("email", $email);
         $permissions = $userInfo->permissions;
         return $permissions;
+    }
+
+    public function checkUserExists($email)
+    {
+        $res = $this->find("email", $email);
+        return !$res ? true : false;
     }
 }
