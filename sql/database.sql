@@ -86,32 +86,109 @@ VALUES (1,1), (2,2), (2,1);
 --   INNER JOIN PostCategory as PC on PC.id = P2C.cat_id
 -- GROUP BY P.id ORDER BY P.id;
 
+DELIMITER //
 
-DROP VIEW IF EXISTS VPost;
-CREATE VIEW VPost AS select p.id postid,
-  p.posttitle posttitle,
-  p.posttext posttext,
-  p.postname postname,
-  c.category Category
-  -- group_concat(c.category) gcategory
-from Posts p
-inner join Post2Cat p2c
-  on p.id = p2c.postid
-inner join PostCategory c
-  on p2c.catid = c.id;
+DROP PROCEDURE IF EXISTS VPost //
+CREATE PROCEDURE VPost(
+    checkWhere varchar(5),
+    checkValue varchar(20),
+    checkCategory varchar(5),
+    category varchar(200),
+    orderBy varchar(4)
+)
+BEGIN
+    IF (checkWhere = 'true') then
+        select p.id postid,
+          p.posttitle posttitle,
+          p.posttext posttext,
+          p.postname postname,
+          c.category Category
+        from Posts p
+        inner join Post2Cat p2c
+          on p.id = p2c.postid
+        inner join PostCategory c
+          on p2c.catid = c.id
+        where p.id = checkValue;
+    ELSEIF (checkCategory = 'true') then
+        select p.id postid,
+          p.posttitle posttitle,
+          p.posttext posttext,
+          p.postname postname,
+          c.category Category
+        from Posts p
+        inner join Post2Cat p2c
+          on p.id = p2c.postid
+        inner join PostCategory c
+          on p2c.catid = c.id
+          where c.category = category;
+        -- SELECT * FROM VPost WHERE Category = category;
+    ELSEIF (orderBy = 'desc') then
+        select p.id postid,
+          p.posttitle posttitle,
+          p.posttext posttext,
+          p.postname postname,
+          c.category Category
+        from Posts p
+        inner join Post2Cat p2c
+          on p.id = p2c.postid
+        inner join PostCategory c
+          on p2c.catid = c.id
+        order by p.id DESC;
+    ELSE
+        select p.id postid,
+          p.posttitle posttitle,
+          p.posttext posttext,
+          p.postname postname,
+          c.category Category
+        from Posts p
+        inner join Post2Cat p2c
+          on p.id = p2c.postid
+        inner join PostCategory c
+          on p2c.catid = c.id;
+    END IF;
+END
+//
 
-DROP VIEW IF EXISTS VCategory;
-CREATE VIEW VCategory as select p.id postid,
-  group_concat(c.category) Category
-  -- group_concat(c.category) gcategory
-from Posts p
-inner join Post2Cat p2c
-  on p.id = p2c.postid
-inner join PostCategory c
-  on p2c.catid = c.id
-  group by p.id order by p.id;
+
+DROP PROCEDURE IF EXISTS VCategory;
+CREATE PROCEDURE VCategory(
+    postid int
+)
+BEGIN
+    select p.id postid,
+      group_concat(c.category) Category
+      -- group_concat(c.category) gcategory
+    from Posts p
+    inner join Post2Cat p2c
+      on p.id = p2c.postid
+    inner join PostCategory c
+      on p2c.catid = c.id
+      where p.id = postid
+      group by p.id order by p.id;
+END
+//
+
+DROP PROCEDURE IF EXISTS PopularTags;
+CREATE PROCEDURE PopularTags(
+)
+BEGIN
+SELECT catid, count(catid) as count FROM Post2Cat GROUP BY catid order by count desc LIMIT 5;
+END
+//
 
 
+DROP PROCEDURE IF EXISTS GetPostCategory;
+CREATE PROCEDURE GetPostCategory(
+)
+BEGIN
+SELECT Category FROM PostCategory;
+END
+//
+
+
+DELIMITER ;
+
+-- Call VPost("false", 1, 'true', 'PHP' , null);
 
 DELIMITER //
 

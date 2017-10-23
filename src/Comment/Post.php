@@ -49,7 +49,7 @@ class Post extends ActiveRecordModel
     public function getPostInfo($params)
     {
         $this->getNext();
-        $sql = "Call VPost(true, ?, null, null, null)";
+        $sql = "Call VPost('true', ?, null, null, null)";
         $res = $this->findAllSql($sql, $params);
         $this->getNext();
         return $res;
