@@ -13,27 +13,32 @@ $gravatar = $this->di->get("gravatar");
 // Create urls for navigation
 
 ?>
-<div class="wrapper"><h1>View All Users</h1>
+<div class="showAllUsersWrapper">
 
-    <?php if (!$items) : ?>
-        <p>There are no items to show.</p>
-        <?php return; ?>
-    <?php endif; ?>
+    <div class="noItems">
+        <?php if (!$items) : ?>
+            <p>There are no items to show.</p>
+            <?php return; ?>
+        <?php endif; ?>
+    </div>
 
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Image</th>
-            <th>Age</th>
-            <th>Permissions</th>
-        </tr>
-        <?php foreach ($items as $item) : ?>
+    <div class="showAllUsersContent">
+        <h1>All users</h1>
+        <table>
             <tr>
-                <td><a href="<?= $showAll . "/" . $item->id ?>"><?= $item->name ?></a></td>
-                <td><img src="<?php echo $gravatar->getGravatar($item->email, 40) ?>" alt="Image"/></td>
-                <td><?= $item->age ?></td>
-                <td><?= $item->permissions ?></td>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Age</th>
+                <th>Rank</th>
             </tr>
-        <?php endforeach; ?>
-    </table>
+            <?php foreach ($items as $item) : ?>
+                <tr>
+                    <td><a href="<?= $showAll . "/" . $item->id ?>"><?= $item->name ?></a></td>
+                    <td><img src="<?php echo $gravatar->getGravatar($item->email, 40) ?>" alt="Image"/></td>
+                    <td><?= $item->age ?></td>
+                    <td><?= $item->permissions ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
 </div>

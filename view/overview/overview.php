@@ -13,51 +13,58 @@ $overview = $this->di->get("overviewController");
 $tag = $di->url->create("tag/tag/");
 
 ?>
-<div class="wrapper"><h1>Overview</h1>
+<div class="wrapperOverview">
+    <div class="noItems">
+        <?php if (!$items) : ?>
+            <p>There are no items to show.</p>
+            <?php return; ?>
+        <?php endif; ?>
+    </div>
 
-
-    <?php if (!$items) : ?>
-        <p>There are no items to show.</p>
-        <?php return; ?>
-    <?php endif; ?>
-
-    <h2>Most active users</h2>
-    <table>
-        <tr>
-            <th>Name</th>
-        </tr>
-        <?php foreach ($items as $item) : ?>
-            <tr>
-                <td><a href="<?= $showAll . "/" . $item->id ?>"><?= $item->name ?></a></td>
-                <td><img src="<?php echo $gravatar->getGravatar($item->email, 40) ?>" alt="Image"/></td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
-
-    <h2>Newest posts</h2>
-    <?php foreach ($posts as $item) : ?>
-        <?php
-        $url = $di->url->create("comment/retrieve/" . $item[0]->postid);
-
-        $tags = explode(",", $item[1][0]->Category);
-        $p = "<p> Tags: ";
-        foreach ($tags as $t) {
-            $id = $commentController->returnCatId($t);
-            $p .= '<a href=' . $tag . "/" . $t .'>' . $t . '</a> ';
-        }
-        $p .= "</p>";
-        ?>
-        <div class="post">
-            <a href="<?= $url ?>">
-                <h2><?= $item[0]->posttitle ?></h2>
-            </a>
-            <?= $p ?>
-            <p>Author: <?= $item[0]->postname ?></p>
+    <div class="overviewUsersAndTags">
+        <div class="overviewUsersAndTagsContent">
+            <h2>Most active users</h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                </tr>
+                <?php foreach ($items as $item) : ?>
+                    <tr>
+                        <td><a href="<?= $showAll . "/" . $item->id ?>"><?= $item->name ?></a></td>
+                        <td><img src="<?php echo $gravatar->getGravatar($item->email, 40) ?>" alt="Image"/></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+            <h2>Most popular tags:</h2>
+            <?php foreach ($popularTags as $t) : ?>
+                <h4><a class="tag" href="<?= $tag . "/" . $overview->getCatName($t->catid) ?>"><?= $overview->getCatName($t->catid) ?></a></h4>
+            <?php endforeach; ?>
         </div>
-    <?php endforeach; ?>
+    </div>
 
-    <h2>Most popular tags:</h2>
-    <?php foreach ($popularTags as $t) : ?>
-        <h4><a href="<?= $tag . "/" . $overview->getCatName($t->catid) ?>"><?= $overview->getCatName($t->catid) ?></a></h4>
-    <?php endforeach; ?>
+    <div class="overviewPosts">
+        <div class="overviewPostsContent">
+            <h2>Newest posts</h2>
+            <?php foreach ($posts as $item) : ?>
+                <?php
+                $url = $di->url->create("comment/retrieve/" . $item[0]->postid);
+
+                $tags = explode(",", $item[1][0]->Category);
+                $p = "<p class=tags> Tags: ";
+                foreach ($tags as $t) {
+                    $id = $commentController->returnCatId($t);
+                    $p .= '<a class="tag" href=' . $tag . "/" . $t .'>' . $t . '</a> ';
+                }
+                $p .= "</p>";
+                ?>
+                <div class="post">
+                    <a href="<?= $url ?>">
+                        <h2><?= $item[0]->posttitle ?></h2>
+                    </a>
+                    <?= $p ?>
+                    <p class="Author">Author: <?= $item[0]->postname ?></p>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
 </div>

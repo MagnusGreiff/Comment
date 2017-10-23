@@ -9,14 +9,19 @@ $commentController = $this->di->get("commentController");
 $tagUrl = $di->url->create("tag/tag/");
 
 ?>
-<div class="wrapper"><h1>All Tags</h1>
-    <?php if (!$tags) : ?>
-        <p>There are no tags to show.</p>
-        <?php return; ?>
-    <?php endif; ?>
+<div class="viewAllTagsWrapper">
+    <div class="noItems">
+        <?php if (!$tags) : ?>
+            <p>There are no tags to show.</p>
+            <?php return; ?>
+        <?php endif; ?>
+    </div>
 
-    <h3>Click on a tag to see all post with that tag.</h3>
-    <?php foreach ($tags as $tag) : ?>
-        <h4>Tag: <a href="<?= $tagUrl . "/" . $tag->Category ?>"><?= $tag->Category ?></a></h4>
-    <?php endforeach; ?>
+    <div class="viewAllTagsContent">
+        <h1>All Tags</h1>
+        <h3>Click on a tag to see all post with that tag.</h3>
+        <?php foreach ($tags as $tag) : ?>
+            <h4>Tag: <a class="tag" href="<?= $tagUrl . "/" . $tag->Category ?>"><?= $tag->Category ?></a>: Count: <?= $tag->count ?></h4>
+        <?php endforeach; ?>
+    </div>
 </div>

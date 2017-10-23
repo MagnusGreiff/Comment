@@ -3,8 +3,11 @@
 namespace Anax\View;
 
 ?>
-<div class="wrapper"><h1>Create new comment</h1>
+<div class="createNewCommentWrapper">
 
-    <?= $form ?>
+    <div class="createNewCommentContent">
+        <h1>Create new comment</h1>
 
+        <?= $form ?>
+    </div>
 </div>

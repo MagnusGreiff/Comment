@@ -17,7 +17,7 @@ SET NAMES utf8;
 
 CREATE TABLE Posts (
   id        INT NOT NULL AUTO_INCREMENT,
-  posttitle VARCHAR(30),
+  posttitle VARCHAR(50),
   postname  VARCHAR(100),
   posttext  TEXT(2499),
 
@@ -91,7 +91,7 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS VPost //
 CREATE PROCEDURE VPost(
     checkWhere varchar(5),
-    checkValue varchar(20),
+    checkValue int,
     checkCategory varchar(5),
     category varchar(200),
     orderBy varchar(4)
@@ -172,7 +172,7 @@ DROP PROCEDURE IF EXISTS PopularTags;
 CREATE PROCEDURE PopularTags(
 )
 BEGIN
-SELECT catid, count(catid) as count FROM Post2Cat GROUP BY catid order by count desc LIMIT 5;
+    SELECT catid, count(catid) as count FROM Post2Cat GROUP BY catid order by count desc LIMIT 5;
 END
 //
 
@@ -181,7 +181,8 @@ DROP PROCEDURE IF EXISTS GetPostCategory;
 CREATE PROCEDURE GetPostCategory(
 )
 BEGIN
-SELECT Category FROM PostCategory;
+    SELECT PC.Category, P2C.catid as catid, count(P2C.catid) as count FROM PostCategory as PC
+    INNER JOIN Post2Cat as P2C ON PC.id = P2C.catid group by PC.id;
 END
 //
 
