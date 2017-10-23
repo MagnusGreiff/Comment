@@ -40,6 +40,10 @@ Short examples on how to use the module comment.
 
 ###### In your composer.json autoload add the following: "Radchasay\\": "src/".
 
+## Theme
+
+##### Run make less-install when standing inside the theme folder and a css-file will be created.
+
 
 
 License
