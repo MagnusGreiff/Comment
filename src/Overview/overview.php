@@ -29,8 +29,9 @@ class Overview implements InjectionAwareInterface
     {
         $post = new Post();
         $post->setDb($db);
-        $sql = "SELECT * FROM VPost ORDER BY postid DESC";
+        $sql = "Call VPost(null, null, 'desc', null, null)";
         $res = $post->findAllSql($sql);
+        $post->getNext();
         $id = [];
         $newRes = [];
         $limitPost = 0;
@@ -52,8 +53,9 @@ class Overview implements InjectionAwareInterface
     {
         $post = new Post();
         $post->setDb($db);
-        $sql = "SELECT Category FROM VCategory WHERE postid = ?";
+        $sql = "Call VCategory(?)";
         $res = $post->findAllSql($sql, $id);
+        $post->getNext();
         return $res;
     }
 
@@ -62,8 +64,9 @@ class Overview implements InjectionAwareInterface
     {
         $post = new Post();
         $post->setDb($db);
-        $sql = "SELECT catid, count(catid) as count FROM Post2Cat GROUP BY catid order by count desc LIMIT 5";
+        $sql = "Call PopularTags()";
         $res = $post->findAllSql($sql);
+        $post->getNext();
         return $res;
     }
 }

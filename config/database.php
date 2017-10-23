@@ -22,5 +22,5 @@ return [
     'fetch_mode' => \PDO::FETCH_OBJ,
     'session_key' => 'Anax\Database',
     'verbose' => false,
-    'debug_connect' => true,
+    'debug_connect' => false,
 ];

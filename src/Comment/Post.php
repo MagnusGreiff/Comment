@@ -49,22 +49,25 @@ class Post extends ActiveRecordModel
     public function getPostInfo($params)
     {
         $this->getNext();
-        $sql = "SELECT * FROM VPost WHERE postid = ?";
+        $sql = "Call VPost(true, ?, null, null, null)";
         $res = $this->findAllSql($sql, $params);
+        $this->getNext();
         return $res;
     }
 
     public function getTags($params)
     {
-        $sql = "SELECT Category FROM VCategory WHERE postid = ?";
+        $sql = "Call VCategory(?)";
         $res = $this->findAllSql($sql, $params);
+        $this->getNext();
         return $res;
     }
 
     public function getAllPosts()
     {
-        $sql = "SELECT * FROM VPost";
+        $sql = "Call VPost(null, null, null, null, null)";
         $res = $this->findAllSql($sql);
+        $this->getNext();
         $id = [];
         $newRes = [];
         foreach ($res as $r) {

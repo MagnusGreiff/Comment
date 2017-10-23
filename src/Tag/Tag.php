@@ -18,8 +18,8 @@ class Tag extends ActiveRecordModel implements InjectionAwareInterface
 
     public function returnAllSpecificTag($tag)
     {
-        $sql = "SELECT * FROM VPost WHERE Category = ?";
-        $res = $this->findAllSql($sql, $tag);
+        $sql = "Call VPost(false, 1, 'true', ? , null)";
+        $res = $this->findAllSql($sql, [$tag]);
         $id = [];
         $newRes = [];
         foreach ($res as $r) {
@@ -34,7 +34,8 @@ class Tag extends ActiveRecordModel implements InjectionAwareInterface
 
     public function returnAllTags()
     {
-        $sql = "SELECT Category FROM PostCategory";
+        $sql = "Call GetPostCategory()";
+        //$sql = "SELECT Category FROM PostCategory";
         $res = $this->findAllSql($sql);
         return $res;
     }
