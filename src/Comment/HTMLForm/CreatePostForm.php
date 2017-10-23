@@ -27,6 +27,7 @@ class CreatePostForm extends FormModel
             [
                 "id"     => __CLASS__,
                 "legend" => "Create Post",
+                "class" => "createNewPostForm"
             ],
             [
                 "title" => [
@@ -34,7 +35,7 @@ class CreatePostForm extends FormModel
                 ],
 
                 "text" => [
-                    "type" => "text",
+                    "type" => "textarea",
                 ],
 
                 "tags" => [
@@ -63,9 +64,18 @@ class CreatePostForm extends FormModel
         //
         $post = new Post();
         $post->setDB($this->di->get("db"));
-        $post->posttitle = htmlentities($this->form->value("title"));
+        $title = htmlentities($this->form->value("title"));
         $data = $this->form->value("text");
         $text = $this->di->get("textfilter")->doFilter($data, ["shortcode", "markdown", "clickable", "bbcode"]);
+
+        var_dump(strlen($title));
+        if (strlen($title) > 50 ) {
+            //$this->form->remeberValues();
+            $this->form->addOutput("Title is too long. Please fix!");
+            return false;
+        } else {
+            $post->posttitle = $title;
+        }
 
         $post->posttext = $text;
         $post->postname = htmlentities($this->di->get("session")->get("email"));

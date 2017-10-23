@@ -38,7 +38,6 @@ class CommentController implements InjectionAwareInterface
             foreach ($test as $t) {
                 $this->deleteCommentComment($t->idcommentc, true);
                 $commentComments->getNext();
-                echo "deleted";
             }
         }
 

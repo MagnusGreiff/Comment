@@ -25,6 +25,7 @@ class CreateCommentForm extends FormModel
             [
                 "id"     => __CLASS__,
                 "legend" => "Create new comment",
+                "class" => "createNewCommentForm"
             ],
             [
                     "text"    => [

@@ -24,7 +24,7 @@ class CreateCommentCommentForm extends FormModel
         $this->form->create(
             [
                 "id"     => __CLASS__,
-                "legend" => "Create new comment",
+                "legend" => "Create new comment"
             ],
             [
                     "text"    => [
