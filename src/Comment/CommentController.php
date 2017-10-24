@@ -13,6 +13,8 @@ use \Radchasay\Comment\HTMLForm\CreatePostForm;
 use \Radchasay\Comment\HTMLForm\CreateCommentForm;
 use \Radchasay\Comment\HTMLForm\UpdateCommentForm;
 use \Radchasay\Comment\HTMLForm\CreateCommentCommentForm;
+use \Radchasay\Comment\HTMLForm\UpdateCommentCommentForm;
+
 
 /**
  * CommentModel
@@ -53,6 +55,24 @@ class CommentController implements InjectionAwareInterface
         $view = $this->di->get("view");
         $pageRender = $this->di->get("pageRender");
         $form = new UpdateCommentForm($this->di, $commentid);
+
+        $form->check();
+
+        $data = [
+            "form" => $form->getHTML(),
+        ];
+
+        $view->add("comment/editComment", $data);
+
+        return $pageRender->renderPage(["title" => $title]);
+    }
+
+
+    public function editCommentComment($idcommentc) {
+        $title = "Update commentcomment";
+        $view = $this->di->get("view");
+        $pageRender = $this->di->get("pageRender");
+        $form = new UpdateCommentCommentForm($this->di, $idcommentc);
 
         $form->check();
 

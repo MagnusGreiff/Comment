@@ -10,7 +10,7 @@ $showAll = $this->di->get("url")->create("user/all/");
 
 $createNewCommentComment = $di->url->create("comment/newCommentComment");
 $deleteCommentComment = $di->url->create("comment/deleteCommentComment");
-$editCommentComment = $di->url->create("comment/editCommentComment");
+// $editCommentComment = $di->url->create("comment/editCommentComment");
 
 $userController = $this->di->get("userController");
 $commentController = $this->di->get("commentController");
@@ -52,7 +52,7 @@ $p .= "</p>";
                 <img src="<?php echo $gravatar->getGravatar($value[0]->Author, 40); ?>" alt=""/>
                 <?php if ($currentUser === $value[0]->Author || $permissions === "admin") : ?>
                     <a class="adminLinks" href="<?= $deleteComment . "/" . $value[0]->idcomment ?>">Delete Comment</a>
-                    <a class="adminLinks" href="<?= $editComment . "/" . $value[0]->idcomment ?>">Edit Comment</a>
+                    <!-- <a class="adminLinks" href="<?= $editComment . "/" . $value[0]->idcomment ?>">Edit Comment</a> -->
                 <?php endif ?>
                 <a class="newCommentLink" href="<?= $createNewCommentComment . "/" . $value[0]->idcomment . "/" . $post[0]->postid ?>">Add new Comment</a>
 
@@ -63,7 +63,7 @@ $p .= "</p>";
                             <img src="<?php echo $gravatar->getGravatar($v->postuser, 40); ?>" alt=""/>
                             <?php if ($currentUser === $v->postuser || $permissions === "admin") : ?>
                                 <a class="adminLinks" href="<?= $deleteCommentComment . "/" . $v->idcommentc ?>">Delete Comment</a>
-                                <a class="adminLinks" href="<?= $editCommentComment . "/" . $v->idcommentc ?>">Edit Comment</a>
+                                <!-- <a class="adminLinks" href="<?= $editCommentComment . "/" . $v->idcommentc ?>">Edit Comment</a> -->
                             <?php endif ?>
                         </div>
                     <?php endforeach; ?>
