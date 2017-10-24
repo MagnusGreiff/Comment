@@ -33,7 +33,7 @@ $gravatar = $this->di->get("gravatar");
             </tr>
             <?php foreach ($items as $item) : ?>
                 <tr>
-                    <td><a href="<?= $showAll . "/" . $item->id ?>"><?= $item->name ?></a></td>
+                    <td><a class="showAllUsersLink" href="<?= $showAll . "/" . $item->id ?>"><?= $item->name ?></a></td>
                     <td><img src="<?php echo $gravatar->getGravatar($item->email, 40) ?>" alt="Image"/></td>
                     <td><?= $item->age ?></td>
                     <td><?= $item->permissions ?></td>

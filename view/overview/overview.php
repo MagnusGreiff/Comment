@@ -30,7 +30,7 @@ $tag = $di->url->create("tag/tag/");
                 </tr>
                 <?php foreach ($items as $item) : ?>
                     <tr>
-                        <td><a href="<?= $showAll . "/" . $item->id ?>"><?= $item->name ?></a></td>
+                        <td><a class="overviewUserLink" href="<?= $showAll . "/" . $item->id ?>"><?= $item->name ?></a></td>
                         <td><img src="<?php echo $gravatar->getGravatar($item->email, 40) ?>" alt="Image"/></td>
                     </tr>
                 <?php endforeach; ?>
@@ -58,7 +58,7 @@ $tag = $di->url->create("tag/tag/");
                 $p .= "</p>";
                 ?>
                 <div class="post">
-                    <a href="<?= $url ?>">
+                    <a class="overviewPostLink" href="<?= $url ?>">
                         <h2><?= $item[0]->posttitle ?></h2>
                     </a>
                     <?= $p ?>

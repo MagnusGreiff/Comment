@@ -21,8 +21,8 @@ $gravatar = $this->di->get("gravatar");
         <img src="<?php echo $gravatar->getGravatar($content->email, 40) ?>" alt="Image"/>
     </div>
     <?php if ($content->permissions === "admin") : ?>
-        <p><a href="<?= $adminTools ?>">User Management</a></p>
+        <p><a class="profileButton" href="<?= $adminTools ?>">User Management</a></p>
     <?php endif ?>
-    <p><a href="<?= url("user/editProfile/{$content->id}"); ?>">Redigera Profil</a></p>
-    <p><a href="<?= $logout ?>">Logga ut</a></p>
+    <p><a class="profileButton" href="<?= url("user/editProfile/{$content->id}"); ?>">Redigera Profil</a></p>
+    <p><a class="profileButton" href="<?= $logout ?>">Logga ut</a></p>
 </main>

@@ -27,7 +27,7 @@ $gravatar = $this->di->get("gravatar");
             $url = $di->url->create("comment/retrieve/$c->postid");
             ?>
             <div class="post">
-                <a href="<?= $url ?>">
+                <a class="tagLink" href="<?= $url ?>">
                     <h2><?= $c->posttitle ?></h2>
                 </a>
                 <p><?= substr($c->posttext, 0, 50); ?></p>

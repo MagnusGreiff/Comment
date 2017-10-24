@@ -22,7 +22,7 @@ $tag = $di->url->create("tag/tag/");
     </div>
 
     <h1>Posts</h1>
-    <p>Create  new post: <a href="<?= $url ?>">Click here.</a></p>
+    <p>Create  new post: <a class="createNewPostLink" href="<?= $url ?>">Click here.</a></p>
     <div class="viewAllPostsContent">
         <?php foreach ($items as $item) : ?>
             <?php
@@ -36,7 +36,7 @@ $tag = $di->url->create("tag/tag/");
             $p .= "</p>";
             ?>
             <div class="post">
-                <a href="<?= $url ?>">
+                <a class="postLink" href="<?= $url ?>">
                     <h2><?= $item[0]->posttitle ?></h2>
                 </a>
                 <?= $p ?>

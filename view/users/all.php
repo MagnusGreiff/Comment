@@ -26,7 +26,7 @@ $postUrl = $this->di->get("url")->create("comment/retrieve/");
                     <?php foreach ($posts as $p) : ?>
                         <tr>
                             <td><?= $p->posttitle ?></td>
-                            <td><a href="<?= $postUrl . "/$p->id" ?>">Check post</a></td>
+                            <td><a class="allPostLink" href="<?= $postUrl . "/$p->id" ?>">Check post</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
@@ -41,7 +41,7 @@ $postUrl = $this->di->get("url")->create("comment/retrieve/");
                     <?php foreach ($comment as $c) : ?>
                         <tr>
                             <td><?= $c->commenttext ?></td>
-                            <td><a href="<?= $postUrl . "/$c->idpost" ?>">Check Comment</a></td>
+                            <td><a class="allCommentLink" href="<?= $postUrl . "/$c->idpost" ?>">Check Comment</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
